@@ -1,3 +1,5 @@
+import {en} from '../Language';
+
 export * from './SplashScreen';
 export * from './SwiperScreen';
 export * from './Authantication';
@@ -22,3 +24,4 @@ export * from './EndCallScreen';
 export * from './SettingsScreen';
 export * from './NotificationScreen';
 export * from './OnlineClassScreen';
+export * from './StudyScreen';

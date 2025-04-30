@@ -31,3 +31,4 @@ export * from './ExamResultsStyle';
 export * from './SerchPopularTagStyle';
 export * from './WishilistTabStyle';
 export * from './SettingsStyle';
+export * from './StudyStyle';

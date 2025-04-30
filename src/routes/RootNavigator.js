@@ -1,46 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { Style } from '../style';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { useSelector } from "react-redux";
-import { RouteName, SideNavigator } from '../routes';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import React, {useEffect, useState} from 'react';
+import {useSelector} from 'react-redux';
+import {AppHeader, ColorPicker} from '../Components';
 import {
-  SplashScreen, Swiperscreen, LoginScreen, RegisterScreen,
-  ForgotPassword, OtpVeryfiveScreen, RegistrationSuccessful,
-  SelectExamScreen, ExamQustionScreen,
-  Downloadcertyficate, ExamMarkSheetNumberScreen, CoursesScreen,
-  PaymentScreen, CreditCardScreen, WatchTrailerScreen, VideoCallScreen,
-  CoursesDetailesScreen, CongrejulationScreen
-  , InstructorsDetaileScreen,
   BuyCourses,
-  SearchPopularTagScreen,
-  EndCallScreen,
-  InstructorsProfiledcreen,
-  TranslationScreen,
   Checkoutscreen,
+  CongrejulationScreen,
+  CoursesDetailesScreen,
+  CoursesScreen,
+  CreditCardScreen,
+  Downloadcertyficate,
+  EndCallScreen,
+  ExamMarkSheetNumberScreen,
+  ExamQustionScreen,
+  ForgotPassword,
+  InstructorsDetaileScreen,
+  InstructorsProfiledcreen,
+  LoginScreen,
+  OtpVeryfiveScreen,
+  PaymentScreen,
+  RegisterScreen,
+  RegistrationSuccessful,
   ReviewsScreen,
+  SearchPopularTagScreen,
+  SelectExamScreen,
+  SplashScreen,
+  Swiperscreen,
+  TranslationScreen,
+  VideoCallScreen,
+  WatchTrailerScreen,
+  StudyScreen,
 } from '../Screens';
-import { AppHeader, ColorPicker } from '../Components';
-import { Colors } from '../Utiles';
+import {Colors} from '../Utiles';
+import {RouteName, SideNavigator} from '../routes';
+import {Style} from '../style';
+// import {} from '../Screens/StudyScreen';
 
 const Stack = createStackNavigator();
-const App = (props) => {
-  const { colorrdata } = useSelector(state => state.commonReducer) || {};
+const App = props => {
+  const {colorrdata} = useSelector(state => state.commonReducer) || {};
   const MyTheme = {
     ...DefaultTheme,
-    Colors: Colors
+    Colors: Colors,
   };
-  const [colorValue, setColorValue] = useState(MyTheme)
+  const [colorValue, setColorValue] = useState(MyTheme);
   useEffect(() => {
-    if (Colors.length != 0 && colorrdata != "") {
+    if (Colors.length != 0 && colorrdata != '') {
       Colors.theme_backgound = colorrdata;
       const MyThemeNew = {
         ...DefaultTheme,
-        Colors: Colors
+        Colors: Colors,
       };
-      setColorValue(MyThemeNew)
+      setColorValue(MyThemeNew);
     }
-  }, [colorrdata, Colors])
+  }, [colorrdata, Colors]);
 
   const HeaderArray = {
     headerShown: true,
@@ -55,14 +69,16 @@ const App = (props) => {
         <Stack.Screen
           name={RouteName.SPLASH_SCREEN}
           component={SplashScreen}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.SELECT_EXAM_SCREEN}
           component={SelectExamScreen}
           options={{
             ...HeaderArray,
-            headerTitle: () => <AppHeader {...props} headerTitle={"Customesidebar_title_1"} />,
+            headerTitle: () => (
+              <AppHeader {...props} headerTitle={'Customesidebar_title_1'} />
+            ),
           }}
         />
         <Stack.Screen
@@ -70,7 +86,9 @@ const App = (props) => {
           component={ExamQustionScreen}
           options={{
             ...HeaderArray,
-            headerTitle: () => <AppHeader {...props} headerTitle={"Customesidebar_title_2"} />,
+            headerTitle: () => (
+              <AppHeader {...props} headerTitle={'Customesidebar_title_2'} />
+            ),
           }}
         />
         <Stack.Screen
@@ -86,33 +104,35 @@ const App = (props) => {
           component={ExamMarkSheetNumberScreen}
           options={{
             ...HeaderArray,
-            headerTitle: () => <AppHeader {...props} headerTitle={"Customesidebar_title_3"} />,
+            headerTitle: () => (
+              <AppHeader {...props} headerTitle={'Customesidebar_title_3'} />
+            ),
           }}
         />
         <Stack.Screen
           name={RouteName.SWIPER_SCREEN}
           component={Swiperscreen}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.LOGIN_SCREEN}
           component={LoginScreen}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.REGISTER_SCREEN}
           component={RegisterScreen}
-          options={{ title: null, headerShown: false, }}
+          options={{title: null, headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.OTP_SCREEN}
           component={OtpVeryfiveScreen}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.REGISTER_SUCCESSFULLY}
           component={RegistrationSuccessful}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.FORGET_PASSWORD_SCREEN}
@@ -124,47 +144,51 @@ const App = (props) => {
         <Stack.Screen
           name={RouteName.HOME_SCREEN}
           component={SideNavigator}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.LANGUAGE_SCREEN}
           component={TranslationScreen}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.COURSES_SCREEN}
           component={CoursesScreen}
           options={{
             ...HeaderArray,
-            headerTitle: () => <AppHeader {...props} headerTitle={"Customesidebar_title_4"} />,
+            headerTitle: () => (
+              <AppHeader {...props} headerTitle={'Customesidebar_title_4'} />
+            ),
           }}
         />
         <Stack.Screen
           name={RouteName.BUY_COURSES_SCREEN}
           component={BuyCourses}
-          options={{ headerShown: false, }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.WATCH_TRAILER_SCREEN}
           component={WatchTrailerScreen}
-          options={{ headerShown: false, }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.COURSES_DETAILS_SCREEN}
           component={CoursesDetailesScreen}
-          options={{ headerShown: false, }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.SEARCH_POPULARTAG_SCREEN}
           component={SearchPopularTagScreen}
-          options={{ headerShown: false, }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.REVIEWS_SCREEN}
           component={ReviewsScreen}
           options={{
             ...HeaderArray,
-            headerTitle: () => <AppHeader {...props} headerTitle={"Customesidebar_title_5"} />,
+            headerTitle: () => (
+              <AppHeader {...props} headerTitle={'Customesidebar_title_5'} />
+            ),
           }}
         />
         <Stack.Screen
@@ -180,12 +204,12 @@ const App = (props) => {
           component={Checkoutscreen}
           options={{
             ...HeaderArray,
-            headerTitle: () => <AppHeader {...props} headerTitle={"Customesidebar_title_6"} />,
+            headerTitle: () => (
+              <AppHeader {...props} headerTitle={'Customesidebar_title_6'} />
+            ),
             headerRight: () => {
-              return (
-                <ColorPicker />
-              );
-            }
+              return <ColorPicker />;
+            },
           }}
         />
         <Stack.Screen
@@ -193,25 +217,29 @@ const App = (props) => {
           component={PaymentScreen}
           options={{
             ...HeaderArray,
-            headerTitle: () => <AppHeader {...props} headerTitle={"Customesidebar_title_7"} />,
+            headerTitle: () => (
+              <AppHeader {...props} headerTitle={'Customesidebar_title_7'} />
+            ),
           }}
         />
         <Stack.Screen
           name={RouteName.VIDEO_CALL_SCREEN}
           component={VideoCallScreen}
-          options={{ headerShown: false, }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.END_CALL_SCREEN}
           component={EndCallScreen}
-          options={{ headerShown: false, }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name={RouteName.INTRUDUCTION_PROFILE_SCREEN}
           component={InstructorsProfiledcreen}
           options={{
             ...HeaderArray,
-            headerTitle: () => <AppHeader {...props} headerTitle={"Customesidebar_title_8"} />,
+            headerTitle: () => (
+              <AppHeader {...props} headerTitle={'Customesidebar_title_8'} />
+            ),
           }}
         />
         <Stack.Screen
@@ -219,7 +247,9 @@ const App = (props) => {
           component={InstructorsDetaileScreen}
           options={{
             ...HeaderArray,
-            headerTitle: () => <AppHeader {...props} headerTitle={"Customesidebar_title_9"} />,
+            headerTitle: () => (
+              <AppHeader {...props} headerTitle={'Customesidebar_title_9'} />
+            ),
           }}
         />
         <Stack.Screen
@@ -227,7 +257,19 @@ const App = (props) => {
           component={CreditCardScreen}
           options={{
             ...HeaderArray,
-            headerTitle: () => <AppHeader {...props} headerTitle={"Customesidebar_title_10"} />,
+            headerTitle: () => (
+              <AppHeader {...props} headerTitle={'Customesidebar_title_10'} />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="Study"
+          component={StudyScreen}
+          options={{
+            ...HeaderArray,
+            headerTitle: () => (
+              <AppHeader {...props} headerTitle={'Customesidebar_title_26'} />
+            ),
           }}
         />
       </Stack.Navigator>
@@ -236,4 +278,3 @@ const App = (props) => {
 };
 
 export default App;
-
