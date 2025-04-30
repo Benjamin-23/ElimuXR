@@ -329,12 +329,12 @@ export function HomeScsreenTabAll() {
         name={RouteName.STUDY_SCREEN}
         component={StudyScreen}
         options={{
-          tabBarLabel: t('Customesidebar_title_23'),
+          tabBarLabel: t('Customesidebar_title_26'),
           tabBarIcon: ({focused}) => (
             <VectorIcons
               color={focused ? Colors.theme_backgound : Colors.gray_text_color}
-              name="headphones"
-              icon="FontAwesome"
+              name="copy1"
+              icon="AntDesign"
               size={SF(20)}
             />
           ),

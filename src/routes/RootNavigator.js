@@ -263,7 +263,7 @@ const App = props => {
           }}
         />
         <Stack.Screen
-          name="Study"
+          name={RouteName.STUDY_SCREEN}
           component={StudyScreen}
           options={{
             ...HeaderArray,
