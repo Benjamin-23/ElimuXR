@@ -11,122 +11,128 @@ import {
   Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Container} from '../../Components';
 
 const StudyScreen = () => {
   // State management
   const [selectedGrade, setSelectedGrade] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [favorites, setFavorites] = useState([]);
-  const [progress, setProgress] = useState({});
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [selectedTopic, setSelectedTopic] = useState(null);
-  const [selectedSubtopic, setSelectedSubtopic] = useState(null);
   const [showTopicsModal, setShowTopicsModal] = useState(false);
-  const [showSubtopicsModal, setShowSubtopicsModal] = useState(false);
   const [showContentModal, setShowContentModal] = useState(false);
-  const [quizSession, setQuizSession] = useState(null);
 
-  // Comprehensive data structure
-  const learningData = {
+  // Data structure based on your requirements
+  const curriculumData = {
     7: {
-      Mathematics: {
-        topics: {
-          'Algebra Basics': {
-            subtopics: {
-              'Introduction to Variables': {
-                video: 'https://example.com/videos/math7-algebra-intro.mp4',
-                thumbnail:
-                  'https://example.com/thumbnails/math7-algebra-intro.jpg',
-                resources: {
-                  arModel: 'math7_algebra_variables',
-                  vrExperience: 'math7_algebra_lab',
-                  quiz: 'math7_algebra_quiz1',
-                },
-              },
-              'Simple Equations': {
-                video: 'https://example.com/videos/math7-simple-eq.mp4',
-                thumbnail: 'https://example.com/thumbnails/math7-simple-eq.jpg',
-                resources: {
-                  arModel: 'math7_algebra_equations',
-                  vrExperience: 'math7_equation_balance',
-                  quiz: 'math7_algebra_quiz2',
-                },
-              },
-            },
-          },
-          Geometry: {
-            subtopics: {
-              'Basic Shapes': {
-                video: 'https://example.com/videos/math7-basic-shapes.mp4',
-                thumbnail:
-                  'https://example.com/thumbnails/math7-basic-shapes.jpg',
-                resources: {
-                  arModel: 'math7_geometry_shapes',
-                  vrExperience: 'math7_shape_explorer',
-                  quiz: 'math7_geometry_quiz1',
-                },
-              },
-            },
+      subjects: {
+        Mathematics: {
+          topics: {
+            '2.0. Algebra': [
+              'Algebraic Expressions',
+              'Linear Equations',
+              'Linear Inequalities',
+            ],
+            '3.0. Measurements': [
+              'Pythagorean Relationship',
+              'Length',
+              'Area',
+              'Volume and Capacity',
+            ],
+            '4.0. Geometry': ['Angles', 'Geometrical Constructions'],
           },
         },
-      },
-      Science: {
-        topics: {
-          Cells: {
-            subtopics: {
-              'Cell Structure': {
-                video: 'https://example.com/videos/sci7-cell-structure.mp4',
-                thumbnail:
-                  'https://example.com/thumbnails/sci7-cell-structure.jpg',
-                resources: {
-                  arModel: 'sci7_cell_model',
-                  vrExperience: 'sci7_cell_explorer',
-                  quiz: 'sci7_cell_quiz1',
-                },
-              },
-            },
+        'Integrated Science': {
+          topics: {
+            '3.0. Living things and the Environment': [
+              'Human reproductive system',
+              'Human Excretory System',
+            ],
+            '4.0. Force and Energy': ['Electrical Energy', 'Magnetism'],
           },
+        },
+        'Health Education': {
+          topics: {
+            '2.0. Human Body Systems': [
+              'Digestive system',
+              'Excretory system',
+              'Circulatory system',
+            ],
+          },
+        },
+        'Pre-Technical Studies': {
+          topics: {}, // Add topics when available
         },
       },
     },
-    // Similar structure for other grades...
     8: {
-      Mathematics: {
-        topics: {
-          Algebra: {
-            subtopics: {
-              'Linear Equations': {
-                video: 'https://example.com/videos/math8-linear-eq.mp4',
-                thumbnail: 'https://example.com/thumbnails/math8-linear-eq.jpg',
-                resources: {
-                  arModel: 'math8_algebra_linear',
-                  vrExperience: 'math8_equation_graph',
-                  quiz: 'math8_algebra_quiz1',
-                },
-              },
-            },
+      subjects: {
+        Mathematics: {
+          topics: {
+            '1.0. Algebra': ['Algebraic Expressions', 'Linear Equations'],
+            '2.0. Measurements': ['Circles', 'Area', 'Money'],
+            '3.0. Geometry': [
+              'Geometrical Constructions',
+              'Coordinates and graphs',
+              'Scale Drawing',
+              'Common Solids',
+            ],
+          },
+        },
+        'Integrated Science': {
+          topics: {
+            '2.0. Living Things and their Environment': [
+              'The Cell',
+              'Movement of materials in and out of the cell',
+            ],
+            '2.0. Human Body Systems': [
+              'Respiratory system',
+              'Reproductive System',
+            ],
+          },
+        },
+        'Health Education': {
+          topics: {}, // Add topics when available
+        },
+        'Pre-Technical Studies': {
+          topics: {
+            'Coming Soon': [
+              'Coming Soon: Give us a like if you want this content!',
+            ],
           },
         },
       },
     },
     9: {
-      Biology: {
-        topics: {
-          Genetics: {
-            subtopics: {
-              'DNA Structure': {
-                video: 'https://example.com/videos/bio9-dna-structure.mp4',
-                thumbnail:
-                  'https://example.com/thumbnails/bio9-dna-structure.jpg',
-                resources: {
-                  arModel: 'bio9_dna_model',
-                  vrExperience: 'bio9_dna_lab',
-                  quiz: 'bio9_genetics_quiz1',
-                },
-              },
-            },
+      subjects: {
+        Mathematics: {
+          topics: {
+            '2.0. Algebra': [
+              'Matrices',
+              'Equations of a Straight Line',
+              'Linear Inequalities',
+            ],
+            '4.0. Geometry': [
+              'Coordinates and Graphs',
+              'Scale Drawing',
+              'Similarity and Enlargement',
+              'Trigonometry',
+            ],
           },
+        },
+        'Integrated Science': {
+          topics: {
+            '1.0. Mixtures, Elements and Compounds': [
+              'Structure of the atom',
+              'Metals and Alloys',
+            ],
+          },
+        },
+        'Health Education': {
+          topics: {}, // Add topics when available
+        },
+        'Pre-Technical Studies': {
+          topics: {}, // Add topics when available
         },
       },
     },
@@ -142,17 +148,8 @@ const StudyScreen = () => {
   const handleGradeSelect = grade => {
     setSelectedGrade(grade);
     setSearchQuery('');
-    resetSelection();
-  };
-
-  const resetSelection = () => {
     setSelectedSubject(null);
     setSelectedTopic(null);
-    setSelectedSubtopic(null);
-    setShowTopicsModal(false);
-    setShowSubtopicsModal(false);
-    setShowContentModal(false);
-    setQuizSession(null);
   };
 
   const toggleFavorite = subject => {
@@ -163,13 +160,6 @@ const StudyScreen = () => {
     }
   };
 
-  const updateProgress = (subject, newProgress) => {
-    setProgress({
-      ...progress,
-      [subject]: Math.min(100, Math.max(0, newProgress)),
-    });
-  };
-
   const handleSubjectPress = subject => {
     setSelectedSubject(subject);
     setShowTopicsModal(true);
@@ -178,355 +168,197 @@ const StudyScreen = () => {
   const handleTopicPress = topic => {
     setSelectedTopic(topic);
     setShowTopicsModal(false);
-    setShowSubtopicsModal(true);
-  };
-
-  const handleSubtopicPress = subtopic => {
-    setSelectedSubtopic(subtopic);
-    setShowSubtopicsModal(false);
     setShowContentModal(true);
   };
 
-  const startQuizSession = () => {
-    setQuizSession({
-      id: Date.now(),
-      questions: [
-        {
-          id: 1,
-          question: 'What is the basic unit of life?',
-          options: ['Cell', 'Atom', 'Molecule', 'Organ'],
-          correctAnswer: 0,
-        },
-        {
-          id: 2,
-          question: 'Which organelle is called the powerhouse of the cell?',
-          options: ['Nucleus', 'Mitochondria', 'Ribosome', 'Golgi Apparatus'],
-          correctAnswer: 1,
-        },
-      ],
-      currentQuestion: 0,
-      score: 0,
-    });
-  };
-
-  const answerQuestion = answerIndex => {
-    if (
-      quizSession.questions[quizSession.currentQuestion].correctAnswer ===
-      answerIndex
-    ) {
-      setQuizSession({
-        ...quizSession,
-        score: quizSession.score + 1,
-        currentQuestion: quizSession.currentQuestion + 1,
-      });
-    } else {
-      setQuizSession({
-        ...quizSession,
-        currentQuestion: quizSession.currentQuestion + 1,
-      });
-    }
-  };
-
   const filteredSubjects = selectedGrade
-    ? Object.keys(learningData[selectedGrade]).filter(subject =>
+    ? Object.keys(curriculumData[selectedGrade].subjects).filter(subject =>
         subject.toLowerCase().includes(searchQuery.toLowerCase()),
       )
     : [];
 
-  const renderProgressBar = progressValue => {
-    return (
-      <View style={styles.progressBarBackground}>
-        <View
-          style={[styles.progressBarFill, {width: `${progressValue || 0}%`}]}
-        />
-        <Text style={styles.progressText}>{progressValue || 0}%</Text>
-      </View>
-    );
-  };
-
   return (
-    <Container>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.header}>Select Your Grade</Text>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.header}>Select Your Grade</Text>
 
-        <View style={styles.gradeContainer}>
-          {grades.map(grade => (
-            <TouchableOpacity
-              key={grade.id}
+      <View style={styles.gradeContainer}>
+        {grades.map(grade => (
+          <TouchableOpacity
+            key={grade.id}
+            style={[
+              styles.gradeButton,
+              selectedGrade === grade.id && styles.selectedGradeButton,
+            ]}
+            onPress={() => handleGradeSelect(grade.id)}>
+            <Text
               style={[
-                styles.gradeButton,
-                selectedGrade === grade.id && styles.selectedGradeButton,
-              ]}
-              onPress={() => handleGradeSelect(grade.id)}>
-              <Text
-                style={[
-                  styles.gradeText,
-                  selectedGrade === grade.id && styles.selectedGradeText,
-                ]}>
-                {grade.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+                styles.gradeText,
+                selectedGrade === grade.id && styles.selectedGradeText,
+              ]}>
+              {grade.name}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
 
-        {selectedGrade && (
-          <View style={styles.contentContainer}>
-            <View style={styles.searchContainer}>
-              <TextInput
-                style={styles.searchInput}
-                placeholder="Search subjects..."
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-              />
-              <Icon
-                name="search"
-                size={24}
-                color="#666"
-                style={styles.searchIcon}
-              />
-            </View>
-
-            <View style={styles.filterContainer}>
-              <Text style={styles.subHeader}>
-                Subjects for Grade {selectedGrade}
-                {searchQuery && ` (${filteredSubjects.length} found)`}
-              </Text>
-            </View>
-
-            <ScrollView>
-              {filteredSubjects.map((subject, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.subjectItem}
-                  onPress={() => handleSubjectPress(subject)}>
-                  <View style={styles.subjectHeader}>
-                    <Text style={styles.subjectText}>{subject}</Text>
-                    <TouchableOpacity
-                      onPress={e => {
-                        e.stopPropagation();
-                        toggleFavorite(subject);
-                      }}>
-                      <Icon
-                        name={
-                          favorites.includes(subject) ? 'star' : 'star-outline'
-                        }
-                        size={24}
-                        color={favorites.includes(subject) ? '#FFD700' : '#666'}
-                      />
-                    </TouchableOpacity>
-                  </View>
-
-                  <Text style={styles.progressLabel}>Progress:</Text>
-                  {renderProgressBar(progress[subject])}
-
-                  <View style={styles.progressControls}>
-                    <TouchableOpacity
-                      style={styles.progressButton}
-                      onPress={e => {
-                        e.stopPropagation();
-                        updateProgress(subject, (progress[subject] || 0) - 10);
-                      }}>
-                      <Text style={styles.progressButtonText}>-10%</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.progressButton}
-                      onPress={e => {
-                        e.stopPropagation();
-                        updateProgress(subject, (progress[subject] || 0) + 10);
-                      }}>
-                      <Text style={styles.progressButtonText}>+10%</Text>
-                    </TouchableOpacity>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+      {selectedGrade && (
+        <View style={styles.contentContainer}>
+          <View style={styles.searchContainer}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search subjects..."
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
+            <Icon
+              name="search"
+              size={24}
+              color="#666"
+              style={styles.searchIcon}
+            />
           </View>
-        )}
 
-        {/* Topics Modal */}
-        <Modal
-          visible={showTopicsModal}
-          animationType="slide"
-          transparent={false}
-          onRequestClose={() => setShowTopicsModal(false)}>
-          <SafeAreaView style={styles.modalContainer}>
-            <View style={styles.modalHeader}>
+          <Text style={styles.subHeader}>
+            Subjects for Grade {selectedGrade}
+            {searchQuery && ` (${filteredSubjects.length} found)`}
+          </Text>
+
+          <ScrollView>
+            {filteredSubjects.map((subject, index) => (
               <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => setShowTopicsModal(false)}>
-                <Icon name="arrow-back" size={24} color="#666" />
-              </TouchableOpacity>
-              <Text style={styles.modalTitle}>{selectedSubject} Topics</Text>
-              <View style={styles.closeButtonPlaceholder} />
-            </View>
-
-            <ScrollView style={styles.topicsContainer}>
-              {selectedSubject &&
-                selectedGrade &&
-                Object.keys(
-                  learningData[selectedGrade][selectedSubject].topics,
-                ).map((topic, index) => (
+                key={index}
+                style={styles.subjectItem}
+                onPress={() => handleSubjectPress(subject)}>
+                <View style={styles.subjectHeader}>
+                  <Text style={styles.subjectText}>{subject}</Text>
                   <TouchableOpacity
-                    key={index}
-                    style={styles.topicItem}
-                    onPress={() => handleTopicPress(topic)}>
-                    <Text style={styles.topicText}>{topic}</Text>
-                    <Icon name="chevron-right" size={20} color="#666" />
-                  </TouchableOpacity>
-                ))}
-            </ScrollView>
-          </SafeAreaView>
-        </Modal>
-
-        {/* Subtopics Modal */}
-        <Modal
-          visible={showSubtopicsModal}
-          animationType="slide"
-          transparent={false}
-          onRequestClose={() => setShowSubtopicsModal(false)}>
-          <SafeAreaView style={styles.modalContainer}>
-            <View style={styles.modalHeader}>
-              <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => {
-                  setShowSubtopicsModal(false);
-                  setShowTopicsModal(true);
-                }}>
-                <Icon name="arrow-back" size={24} color="#666" />
-              </TouchableOpacity>
-              <Text style={styles.modalTitle}>{selectedTopic}</Text>
-              <View style={styles.closeButtonPlaceholder} />
-            </View>
-
-            <ScrollView style={styles.topicsContainer}>
-              {selectedSubject &&
-                selectedGrade &&
-                selectedTopic &&
-                Object.keys(
-                  learningData[selectedGrade][selectedSubject].topics[
-                    selectedTopic
-                  ].subtopics,
-                ).map((subtopic, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={styles.topicItem}
-                    onPress={() => handleSubtopicPress(subtopic)}>
-                    <Text style={styles.topicText}>{subtopic}</Text>
-                    <Icon name="chevron-right" size={20} color="#666" />
-                  </TouchableOpacity>
-                ))}
-            </ScrollView>
-          </SafeAreaView>
-        </Modal>
-
-        {/* Content Modal */}
-        <Modal
-          visible={showContentModal}
-          animationType="slide"
-          transparent={false}
-          onRequestClose={() => setShowContentModal(false)}>
-          <SafeAreaView style={styles.modalContainer}>
-            <View style={styles.modalHeader}>
-              <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => {
-                  setShowContentModal(false);
-                  setShowSubtopicsModal(true);
-                }}>
-                <Icon name="arrow-back" size={24} color="#666" />
-              </TouchableOpacity>
-              <Text style={styles.modalTitle}>{selectedSubtopic}</Text>
-              <View style={styles.closeButtonPlaceholder} />
-            </View>
-
-            <ScrollView style={styles.contentContainer}>
-              {!quizSession ? (
-                <>
-                  <View style={styles.videoContainer}>
-                    {/* <Image
-                      source={{
-                        uri: learningData[selectedGrade][selectedSubject].topics[
-                          selectedTopic
-                        ].subtopics[selectedSubtopic].thumbnail,
-                      }}
-                      style={styles.videoThumbnail}
-                    /> */}
+                    onPress={e => {
+                      e.stopPropagation();
+                      toggleFavorite(subject);
+                    }}>
                     <Icon
-                      name="play-circle-filled"
-                      size={60}
-                      color="#4a90e2"
-                      style={styles.playIcon}
+                      name={
+                        favorites.includes(subject) ? 'star' : 'star-outline'
+                      }
+                      size={24}
+                      color={favorites.includes(subject) ? '#FFD700' : '#666'}
                     />
-                  </View>
-
-                  <View style={styles.learningOptions}>
-                    <TouchableOpacity style={styles.optionButton}>
-                      <Icon name="3d-rotation" size={30} color="#4a90e2" />
-                      <Text style={styles.optionText}>AR Model</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.optionButton}>
-                      <Icon name="vrpano" size={30} color="#4a90e2" />
-                      <Text style={styles.optionText}>VR Experience</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      style={styles.optionButton}
-                      onPress={startQuizSession}>
-                      <Icon name="quiz" size={30} color="#4a90e2" />
-                      <Text style={styles.optionText}>Take Quiz</Text>
-                    </TouchableOpacity>
-                  </View>
-                </>
-              ) : (
-                <View style={styles.quizContainer}>
-                  {quizSession.currentQuestion <
-                  quizSession.questions.length ? (
-                    <>
-                      <Text style={styles.quizQuestion}>
-                        {
-                          quizSession.questions[quizSession.currentQuestion]
-                            .question
-                        }
-                      </Text>
-                      <View style={styles.quizOptions}>
-                        {quizSession.questions[
-                          quizSession.currentQuestion
-                        ].options.map((option, index) => (
-                          <TouchableOpacity
-                            key={index}
-                            style={styles.quizOptionButton}
-                            onPress={() => answerQuestion(index)}>
-                            <Text style={styles.quizOptionText}>{option}</Text>
-                          </TouchableOpacity>
-                        ))}
-                      </View>
-                    </>
-                  ) : (
-                    <>
-                      <Text style={styles.quizResultTitle}>
-                        Quiz Completed!
-                      </Text>
-                      <Text style={styles.quizResultScore}>
-                        Your score: {quizSession.score}/
-                        {quizSession.questions.length}
-                      </Text>
-                      <TouchableOpacity
-                        style={styles.quizRestartButton}
-                        onPress={() => setQuizSession(null)}>
-                        <Text style={styles.quizRestartButtonText}>
-                          Back to Content
-                        </Text>
-                      </TouchableOpacity>
-                    </>
-                  )}
+                  </TouchableOpacity>
                 </View>
-              )}
-            </ScrollView>
-          </SafeAreaView>
-        </Modal>
-      </SafeAreaView>
-    </Container>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      )}
+
+      {/* Topics Modal */}
+      <Modal
+        visible={showTopicsModal}
+        animationType="slide"
+        transparent={false}
+        onRequestClose={() => setShowTopicsModal(false)}>
+        <SafeAreaView style={styles.modalContainer}>
+          <View style={styles.modalHeader}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => setShowTopicsModal(false)}>
+              <Icon name="arrow-back" size={24} color="#666" />
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>{selectedSubject}</Text>
+            <View style={styles.closeButtonPlaceholder} />
+          </View>
+
+          <ScrollView style={styles.topicsContainer}>
+            {selectedSubject &&
+              selectedGrade &&
+              Object.entries(
+                curriculumData[selectedGrade].subjects[selectedSubject].topics,
+              ).map(([topicNumber, subtopics], index) => (
+                <View key={index}>
+                  <Text style={styles.topicNumber}>{topicNumber}</Text>
+                  {subtopics.map((subtopic, subIndex) => (
+                    <TouchableOpacity
+                      key={subIndex}
+                      style={styles.topicItem}
+                      onPress={() =>
+                        handleTopicPress(`${topicNumber}: ${subtopic}`)
+                      }>
+                      <Text style={styles.topicText}>{subtopic}</Text>
+                      <Icon name="chevron-right" size={20} color="#666" />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              ))}
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
+
+      {/* Content Modal */}
+      <Modal
+        visible={showContentModal}
+        animationType="slide"
+        transparent={false}
+        onRequestClose={() => setShowContentModal(false)}>
+        <SafeAreaView style={styles.modalContainer}>
+          <View style={styles.modalHeader}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => {
+                setShowContentModal(false);
+                setShowTopicsModal(true);
+              }}>
+              <Icon name="arrow-back" size={24} color="#666" />
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>{selectedTopic}</Text>
+            <View style={styles.closeButtonPlaceholder} />
+          </View>
+
+          <ScrollView style={styles.contentContainer}>
+            <View style={styles.learningContent}>
+              <Text style={styles.contentTitle}>Learning Materials</Text>
+
+              <View style={styles.videoContainer}>
+                {/* <Image
+                  source={{
+                    uri: 'https://via.placeholder.com/400x225?text=Video+Thumbnail',
+                  }}
+                  style={styles.videoThumbnail}
+                /> */}
+                <Icon
+                  name="play-circle-filled"
+                  size={60}
+                  color="#4a90e2"
+                  style={styles.playIcon}
+                />
+              </View>
+
+              <View style={styles.learningOptions}>
+                <TouchableOpacity style={styles.optionButton}>
+                  <Icon name="3d-rotation" size={30} color="#4a90e2" />
+                  <Text style={styles.optionText}>AR Model</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.optionButton}>
+                  <Icon name="vrpano" size={30} color="#4a90e2" />
+                  <Text style={styles.optionText}>VR Experience</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.optionButton}>
+                  <Icon name="quiz" size={30} color="#4a90e2" />
+                  <Text style={styles.optionText}>Take Quiz</Text>
+                </TouchableOpacity>
+              </View>
+
+              <Text style={styles.contentDescription}>
+                Detailed content and explanations for {selectedTopic} would
+                appear here. This could include text lessons, diagrams,
+                examples, and practice problems.
+              </Text>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
+    </SafeAreaView>
   );
 };
 
@@ -572,11 +404,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 15,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
   },
   searchContainer: {
     flexDirection: 'row',
@@ -597,16 +424,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 10,
   },
-  filterContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
   subHeader: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
+    marginBottom: 15,
   },
   subjectItem: {
     padding: 15,
@@ -617,53 +439,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
   },
   subjectText: {
     fontSize: 16,
     fontWeight: '600',
     color: '#444',
-  },
-  progressLabel: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 5,
-  },
-  progressBarBackground: {
-    height: 20,
-    backgroundColor: '#e0e0e0',
-    borderRadius: 10,
-    marginBottom: 10,
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  progressBarFill: {
-    height: '100%',
-    backgroundColor: '#4a90e2',
-    borderRadius: 10,
-  },
-  progressText: {
-    position: 'absolute',
-    right: 5,
-    top: 0,
-    lineHeight: 20,
-    fontSize: 12,
-    color: '#333',
-  },
-  progressControls: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  progressButton: {
-    backgroundColor: '#4a90e2',
-    padding: 8,
-    borderRadius: 5,
-    minWidth: 80,
-    alignItems: 'center',
-  },
-  progressButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
   },
   modalContainer: {
     flex: 1,
@@ -694,17 +474,34 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
   },
+  topicNumber: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#4a90e2',
+    marginTop: 15,
+    marginBottom: 5,
+  },
   topicItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
+    padding: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#f0f0f0',
+    marginLeft: 10,
   },
   topicText: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#444',
+  },
+  learningContent: {
+    padding: 20,
+  },
+  contentTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 15,
   },
   videoContainer: {
     height: 200,
@@ -713,6 +510,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
     position: 'relative',
+    borderRadius: 8,
+    overflow: 'hidden',
   },
   videoThumbnail: {
     width: '100%',
@@ -725,62 +524,23 @@ const styles = StyleSheet.create({
   learningOptions: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 30,
+    marginBottom: 25,
   },
   optionButton: {
     alignItems: 'center',
     padding: 10,
+    width: '30%',
   },
   optionText: {
     marginTop: 5,
     color: '#4a90e2',
     fontWeight: '500',
-  },
-  quizContainer: {
-    padding: 20,
-  },
-  quizQuestion: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
-  },
-  quizOptions: {
-    marginTop: 10,
-  },
-  quizOptionButton: {
-    backgroundColor: '#f0f0f0',
-    padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
-  },
-  quizOptionText: {
-    fontSize: 16,
-    color: '#333',
-  },
-  quizResultTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 20,
-    color: '#333',
   },
-  quizResultScore: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginBottom: 30,
-    color: '#4a90e2',
-  },
-  quizRestartButton: {
-    backgroundColor: '#4a90e2',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  quizRestartButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
+  contentDescription: {
+    fontSize: 15,
+    lineHeight: 22,
+    color: '#555',
   },
 });
 

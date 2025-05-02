@@ -154,6 +154,41 @@ function MyCourseTabScreenStack(props) {
     </Stack.Navigator>
   );
 }
+function StudyScreenStack(props) {
+  const {t} = useTranslation();
+  const {navigation} = props;
+  return (
+    <Stack.Navigator initialRouteName="Study">
+      <Stack.Screen
+        name="Study"
+        component={StudyScreen}
+        options={{
+          headerTitle: props => (
+            <AppHeader
+              rightView={Style.RemoveBgColor}
+              {...props}
+              headerTitle={t('Customesidebar_title_26')}
+            />
+          ),
+          ...HeaderArray,
+          headerLeft: () => <HeaderLeftMenuIcon {...props} />,
+          headerRight: () => (
+            <HeaderRightIcon
+              OnlineClass={() =>
+                navigation.navigate(RouteName.ONLINE_CLASS_SCREEN)
+              }
+              ChatOnpress={() => navigation.navigate(RouteName.CHAT_SCREEN)}
+              CheckOutOnPress={() =>
+                navigation.navigate(RouteName.CHECKOUT_SCREEN)
+              }
+            />
+          ),
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function ExamTabScreenStack(props) {
   const {t} = useTranslation();
   const {navigation} = props;
@@ -327,7 +362,7 @@ export function HomeScsreenTabAll() {
       {/* show study screen */}
       <Tab.Screen
         name={RouteName.STUDY_SCREEN}
-        component={StudyScreen}
+        component={StudyScreenStack}
         options={{
           tabBarLabel: t('Customesidebar_title_26'),
           tabBarIcon: ({focused}) => (
