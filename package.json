@@ -10,6 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@google/genai": "^0.12.0",
+    "@google/generative-ai": "^0.24.1",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/drawer": "^6.7.2",
@@ -19,8 +21,10 @@
     "@rneui/base": "^4.0.0-rc.8",
     "@rneui/themed": "^4.0.0-rc.8",
     "@supabase/supabase-js": "^2.49.4",
+    "axios": "^1.9.0",
     "i18next": "^23.11.5",
     "lottie-react-native": "^6.7.2",
+    "openai": "^4.97.0",
     "react": "18.3.1",
     "react-i18next": "^14.1.2",
     "react-native": "0.75.2",

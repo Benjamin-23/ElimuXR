@@ -98,10 +98,12 @@ const Register = props => {
                 value={state.emailId}
                 placeholderTextColor={Colors.gray_text_color}
               /> */}
-              <PasswordInput
+              <Input
                 label={t('Password_Text')}
                 placeholder={t('Password_Text')}
                 onChangeText={text => setPassword(text)}
+                inputType="password"
+                value={password}
               />
               <Spacing space={SH(20)} />
               {/* <PasswordInput

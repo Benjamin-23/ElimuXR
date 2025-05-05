@@ -11,6 +11,8 @@ import {
   Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {queryDeepSeek} from './deepseekService';
+import ChatScreen from './chatScreen';
 
 const StudyScreen = () => {
   // State management
@@ -21,6 +23,7 @@ const StudyScreen = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [showTopicsModal, setShowTopicsModal] = useState(false);
   const [showContentModal, setShowContentModal] = useState(false);
+  const deepSeek = 'sk-0fe96d271238454aa1dd88d2b6d31158';
 
   // Data structure based on your requirements
   const curriculumData = {
@@ -176,6 +179,18 @@ const StudyScreen = () => {
         subject.toLowerCase().includes(searchQuery.toLowerCase()),
       )
     : [];
+
+  const [input, setInput] = useState('');
+  const [response, setResponse] = useState('');
+
+  const handleSubmit = async () => {
+    try {
+      const result = await queryDeepSeek(input);
+      setResponse(result.choices[0].message.content);
+    } catch (error) {
+      setResponse('Error connecting to DeepSeek');
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -354,6 +369,7 @@ const StudyScreen = () => {
                 appear here. This could include text lessons, diagrams,
                 examples, and practice problems.
               </Text>
+              <ChatScreen />
             </View>
           </ScrollView>
         </SafeAreaView>

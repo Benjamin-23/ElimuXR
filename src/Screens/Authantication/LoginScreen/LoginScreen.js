@@ -35,15 +35,22 @@ const Loginscreen = props => {
   const {Colors} = useTheme();
   const Logins = useMemo(() => Login(Colors), [Colors]);
   async function signInWithEmail() {
-    setLoading(true);
-    const {error, data} = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
-    console.log(data);
-    if (error) Alert.alert(error.message);
-    setLoading(false);
-    if (data.user) navigation.navigate(RouteName.OTP_SCREEN);
+    try {
+      setLoading(true);
+      console.log(email, 'email');
+      console.log(password, 'password');
+      const {error, data} = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+      // console.log(data, 'kuna kitu');
+      if (data.user) navigation.navigate(RouteName.OTP_SCREEN);
+    } catch (error) {
+      console.log(error);
+      if (error) Alert.alert(error.message);
+    } finally {
+      setLoading(false);
+    }
   }
   async function signUpWithEmail() {
     setLoading(true);
@@ -88,10 +95,12 @@ const Loginscreen = props => {
                   placeholderTextColor={Colors.gray_text_color}
                 />
               </View>
-              <PasswordInput
+              <Input
                 label={t('Password_Text')}
                 placeholder={t('Password_Text')}
                 onChangeText={text => setPassword(text)}
+                value={password}
+                inputType="password"
               />
               <View style={Logins.ViewTextStyle}>
                 <Text style={Logins.TextStyle}>

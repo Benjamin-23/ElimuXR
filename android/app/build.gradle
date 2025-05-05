@@ -78,9 +78,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.valuxlms"
+    namespace "com.ElimuXR"
     defaultConfig {
-        applicationId "com.valuxlms"
+        applicationId "com.ElimuXR"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

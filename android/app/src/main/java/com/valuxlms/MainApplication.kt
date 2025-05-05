@@ -1,4 +1,4 @@
-package com.valuxlms
+package com.ElimuXR
 
 import android.app.Application
 import com.facebook.react.PackageList
