@@ -23,7 +23,8 @@ const StudyScreen = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [showTopicsModal, setShowTopicsModal] = useState(false);
   const [showContentModal, setShowContentModal] = useState(false);
-  const deepSeek = 'sk-0fe96d271238454aa1dd88d2b6d31158';
+  const [showBotScreen, setShowBotScreen] = useState(false);
+  const [showChatScreen, setShowChatScreen] = useState(false);
 
   // Data structure based on your requirements
   const curriculumData = {
@@ -305,6 +306,11 @@ const StudyScreen = () => {
                 </View>
               ))}
           </ScrollView>
+          <TouchableOpacity
+            style={styles.chatButton}
+            onPress={() => setShowChatScreen(true)}>
+            <Icon name="chat" size={30} color="#fff" />
+          </TouchableOpacity>
         </SafeAreaView>
       </Modal>
 
@@ -331,7 +337,6 @@ const StudyScreen = () => {
           <ScrollView style={styles.contentContainer}>
             <View style={styles.learningContent}>
               <Text style={styles.contentTitle}>Learning Materials</Text>
-
               <View style={styles.videoContainer}>
                 {/* <Image
                   source={{
@@ -346,32 +351,66 @@ const StudyScreen = () => {
                   style={styles.playIcon}
                 />
               </View>
-
               <View style={styles.learningOptions}>
                 <TouchableOpacity style={styles.optionButton}>
-                  <Icon name="3d-rotation" size={30} color="#4a90e2" />
+                  <Icon name="play-circle-outline" size={20} color="#4a90e2" />
+                  <Text style={styles.optionText}>Video</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.optionButton}>
+                  <Icon name="3d-rotation" size={20} color="#4a90e2" />
                   <Text style={styles.optionText}>AR Model</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.optionButton}>
-                  <Icon name="vrpano" size={30} color="#4a90e2" />
-                  <Text style={styles.optionText}>VR Experience</Text>
+                  <Icon name="vrpano" size={20} color="#4a90e2" />
+                  <Text style={styles.optionText}>VR</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.optionButton}>
-                  <Icon name="quiz" size={30} color="#4a90e2" />
-                  <Text style={styles.optionText}>Take Quiz</Text>
+                <TouchableOpacity
+                  style={styles.optionButton}
+                  onPress={() => setShowBotScreen(true)}>
+                  <Icon name="quiz" size={20} color="#4a90e2" />
+                  <Text style={styles.optionText}>Quiz</Text>
                 </TouchableOpacity>
               </View>
-
               <Text style={styles.contentDescription}>
                 Detailed content and explanations for {selectedTopic} would
                 appear here. This could include text lessons, diagrams,
                 examples, and practice problems.
               </Text>
-              <ChatScreen />
+              {/* {showBotScreen && <ChatScreen />} */}
             </View>
           </ScrollView>
+          <TouchableOpacity
+            style={styles.chatButton}
+            onPress={() => setShowChatScreen(true)}>
+            <Icon name="chat" size={30} color="#fff" />
+          </TouchableOpacity>
+        </SafeAreaView>
+      </Modal>
+
+      <TouchableOpacity
+        style={styles.chatButton}
+        onPress={() => setShowChatScreen(true)}>
+        <Icon name="chat" size={30} color="#fff" />
+      </TouchableOpacity>
+
+      <Modal
+        visible={showChatScreen}
+        animationType="slide"
+        transparent={false}
+        onRequestClose={() => setShowChatScreen(false)}>
+        <SafeAreaView style={styles.modalContainer}>
+          <View style={styles.modalHeader}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => setShowChatScreen(false)}>
+              <Icon name="close" size={24} color="#666" />
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>Chat</Text>
+            <View style={styles.closeButtonPlaceholder} />
+          </View>
+          <ChatScreen />
         </SafeAreaView>
       </Modal>
     </SafeAreaView>
@@ -539,24 +578,44 @@ const styles = StyleSheet.create({
   },
   learningOptions: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    gap: 10,
     marginBottom: 25,
+    flex: 1,
   },
   optionButton: {
-    alignItems: 'center',
-    padding: 10,
-    width: '30%',
+    alignItems: 'justify',
+    paddingVertical: 10,
+    width: '25%',
   },
   optionText: {
     marginTop: 5,
     color: '#4a90e2',
     fontWeight: '500',
-    textAlign: 'center',
+    textAlign: 'justify',
   },
   contentDescription: {
     fontSize: 15,
     lineHeight: 22,
     color: '#555',
+  },
+  chatButton: {
+    position: 'absolute',
+    right: 20,
+    bottom: 20,
+    backgroundColor: '#4a90e2',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
 });
 

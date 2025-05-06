@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { SF, SH, SW, Fonts, Colors } from '../../Utiles';
-import { Input } from 'react-native-elements';
-import { VectorIcons } from '../../Components';
+import React, {useMemo, useState} from 'react';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {SF, SH, SW, Fonts, Colors} from '../../Utiles';
+import {Input} from 'react-native-elements';
+import {VectorIcons} from '../../Components';
 
 function PasswordInput({
   title,
@@ -12,25 +12,29 @@ function PasswordInput({
   label,
   containerStyle,
   inputContainerStyle,
-  errorMessage = "",
+  errorMessage = '',
 }) {
   const [passwordVisibility, setpasswordVisibility] = useState(true);
   const [TextInputPassword, setTextInputPassword] = useState('');
-  const onChangeText = (text) => {
-    if (text === 'TextInputPassword') setpasswordVisibility(!passwordVisibility);
+  const onChangeText = text => {
+    if (text === 'TextInputPassword')
+      setpasswordVisibility(!passwordVisibility);
   };
   const styles = useMemo(
     () =>
       StyleSheet.create({
         container: {
-          width: '100%', position: 'relative',
-          top: SH(-10), ...containerStyle, marginBottom: SH(0),
+          width: '100%',
+          position: 'relative',
+          top: SH(-10),
+          ...containerStyle,
+          marginBottom: SH(0),
         },
         inputContainerStyle: {
           borderBottomWidth: SH(0),
 
-          width: "100%",
-          ...inputContainerStyle
+          width: '100%',
+          ...inputContainerStyle,
         },
         input_style: {
           width: '100%',
@@ -59,12 +63,12 @@ function PasswordInput({
         placeholderStyle: {
           fontSize: SF(19),
           color: Colors.black_text_color,
-          fontFamily: Fonts.Poppins_Medium
+          fontFamily: Fonts.Poppins_Medium,
         },
         errorStyle: {
           color: Colors.red,
           fontFamily: Fonts.Poppins_Regular,
-          height: errorMessage == "" && SH(0),
+          height: errorMessage == '' && SH(0),
           margin: 0,
         },
         IconPostionAboluteTwo: {
@@ -72,7 +76,7 @@ function PasswordInput({
           right: SH(30),
           height: SH(50),
           flexDirection: 'row',
-          alignItems: 'center'
+          alignItems: 'center',
         },
       }),
     [title, titleStyle, inputStyle, Colors],
@@ -82,7 +86,11 @@ function PasswordInput({
       <Input
         name="password"
         rightIcon={
-          <TouchableOpacity style={styles.IconPostionAboluteTwo} onPress={() => { onChangeText("TextInputPassword") }}>
+          <TouchableOpacity
+            style={styles.IconPostionAboluteTwo}
+            onPress={() => {
+              onChangeText('TextInputPassword');
+            }}>
             <VectorIcons
               name={passwordVisibility ? 'eye-off' : 'eye'}
               size={SF(25)}
@@ -107,7 +115,7 @@ function PasswordInput({
         textContentType="newPassword"
         secureTextEntry={passwordVisibility}
         enablesReturnKeyAutomatically
-        onChangeText={(text) => setTextInputPassword(text)}
+        onChangeText={text => setTextInputPassword(text)}
       />
     </View>
   );

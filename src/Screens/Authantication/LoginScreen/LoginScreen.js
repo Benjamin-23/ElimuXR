@@ -16,11 +16,13 @@ import {
   PasswordInput,
   Spacing,
 } from '../../../Components';
-import {SH} from '../../../Utiles';
+import {SH, SF} from '../../../Utiles';
 import images from '../../../index';
 import {RouteName} from '../../../routes';
 import {Login, Style} from '../../../style';
 import {supabase} from '../../../lib/supabase';
+import {VectorIcons} from '../../../Components';
+import {StyleSheet} from 'react-native';
 
 const Loginscreen = props => {
   const {navigation} = props;
@@ -37,8 +39,6 @@ const Loginscreen = props => {
   async function signInWithEmail() {
     try {
       setLoading(true);
-      console.log(email, 'email');
-      console.log(password, 'password');
       const {error, data} = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
@@ -66,6 +66,10 @@ const Loginscreen = props => {
       Alert.alert('Please check your inbox for email verification!');
     setLoading(false);
   }
+  const [passwordVisibility, setpasswordVisibility] = useState(true);
+  const onChangeText = text => {
+    if (text === 'password') setpasswordVisibility(!passwordVisibility);
+  };
   return (
     <Container>
       <View style={Logins.MinViewScreen}>
@@ -96,11 +100,27 @@ const Loginscreen = props => {
                 />
               </View>
               <Input
+                name="password"
                 label={t('Password_Text')}
                 placeholder={t('Password_Text')}
                 onChangeText={text => setPassword(text)}
                 value={password}
-                inputType="password"
+                textContentType="newPassword"
+                secureTextEntry={passwordVisibility}
+                rightIcon={
+                  <TouchableOpacity
+                    style={styles.IconPostionAboluteTwo}
+                    onPress={() => {
+                      onChangeText('password');
+                    }}>
+                    <VectorIcons
+                      name={passwordVisibility ? 'eye-off' : 'eye'}
+                      size={SF(25)}
+                      color={Colors.gray_text_color}
+                      icon="Ionicons"
+                    />
+                  </TouchableOpacity>
+                }
               />
               <View style={Logins.ViewTextStyle}>
                 <Text style={Logins.TextStyle}>
@@ -136,4 +156,13 @@ const Loginscreen = props => {
     </Container>
   );
 };
+const styles = StyleSheet.create({
+  IconPostionAboluteTwo: {
+    position: 'absolute',
+    right: SH(30),
+    height: SH(50),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});
 export default Loginscreen;

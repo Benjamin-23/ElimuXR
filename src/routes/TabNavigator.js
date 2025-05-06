@@ -158,9 +158,9 @@ function StudyScreenStack(props) {
   const {t} = useTranslation();
   const {navigation} = props;
   return (
-    <Stack.Navigator initialRouteName="Study">
+    <Stack.Navigator initialRouteName="StudyTab">
       <Stack.Screen
-        name="Study"
+        name="StudyTab"
         component={StudyScreen}
         options={{
           headerTitle: props => (
@@ -299,6 +299,22 @@ export function HomeScsreenTabAll() {
           ),
         }}
       />
+      {/* show study screen */}
+      <Tab.Screen
+        name={RouteName.STUDY_SCREEN}
+        component={StudyScreenStack}
+        options={{
+          tabBarLabel: t('Customesidebar_title_26'),
+          tabBarIcon: ({focused}) => (
+            <VectorIcons
+              color={focused ? Colors.theme_backgound : Colors.gray_text_color}
+              name="copy1"
+              icon="AntDesign"
+              size={SF(20)}
+            />
+          ),
+        }}
+      />
       <Tab.Screen
         name={RouteName.MY_COURSES_TAB}
         component={MyCourseTabScreenStack}
@@ -354,22 +370,6 @@ export function HomeScsreenTabAll() {
               color={focused ? Colors.theme_backgound : Colors.gray_text_color}
               name="user-circle"
               icon="FontAwesome"
-              size={SF(20)}
-            />
-          ),
-        }}
-      />
-      {/* show study screen */}
-      <Tab.Screen
-        name={RouteName.STUDY_SCREEN}
-        component={StudyScreenStack}
-        options={{
-          tabBarLabel: t('Customesidebar_title_26'),
-          tabBarIcon: ({focused}) => (
-            <VectorIcons
-              color={focused ? Colors.theme_backgound : Colors.gray_text_color}
-              name="copy1"
-              icon="AntDesign"
               size={SF(20)}
             />
           ),

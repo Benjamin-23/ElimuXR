@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {GoogleGenerativeAI} from '@google/generative-ai';
+// import {GEMINI_API_KEY} from '@env';
 
 const genAI = new GoogleGenerativeAI('AIzaSyAVbnugBGBphOPlkdg_ZulyZlrlAlvWoHQ');
 export const generateText = async prompt => {

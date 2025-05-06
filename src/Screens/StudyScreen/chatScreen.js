@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {generateText} from './deepseekService';
+import Markdown from 'react-native-markdown-display';
 
 const ChatScreen = () => {
   const [input, setInput] = useState('');
@@ -32,7 +33,6 @@ const ChatScreen = () => {
         {role: 'user', content: input},
         {role: 'assistant', content: geminiResponse},
       ]);
-      // console.log(geminiResponse, 'wewe');
       setResponse(geminiResponse);
       setInput('');
     } catch (error) {
@@ -57,7 +57,14 @@ const ChatScreen = () => {
               styles.messageBubble,
               msg.role === 'user' ? styles.userBubble : styles.aiBubble,
             ]}>
-            <Text style={styles.messageText}>{msg.content}</Text>
+            <Markdown
+              style={{
+                body: styles.messageText,
+                strong: styles.boldText,
+                em: styles.semiBoldText,
+              }}>
+              {msg.content}
+            </Markdown>
             {/* <Text style={styles.timestamp}>
               {msg.timestamp.toLocaleTimeString([], {
                 hour: '2-digit',
@@ -99,10 +106,19 @@ const ChatScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  boldText: {
+    fontWeight: 'bold',
+  },
+  semiBoldText: {
+    fontWeight: '600', // Semi-bold
+  },
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
-    padding: 10,
+    padding: 20,
+    marginTop: 20,
+    height: 200,
+    borderRadius: 10,
   },
   chatContainer: {
     paddingBottom: 70,
