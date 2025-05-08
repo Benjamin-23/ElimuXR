@@ -13,6 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {queryDeepSeek} from './deepseekService';
 import ChatScreen from './chatScreen';
+import images from '../../images/index';
 
 const StudyScreen = () => {
   // State management
@@ -309,7 +310,11 @@ const StudyScreen = () => {
           <TouchableOpacity
             style={styles.chatButton}
             onPress={() => setShowChatScreen(true)}>
-            <Icon name="chat" size={30} color="#fff" />
+            <Image
+              style={{width: 40, height: 40}}
+              resizeMode="contain"
+              source={images.Chat_icon}
+            />
           </TouchableOpacity>
         </SafeAreaView>
       </Modal>
@@ -384,7 +389,11 @@ const StudyScreen = () => {
           <TouchableOpacity
             style={styles.chatButton}
             onPress={() => setShowChatScreen(true)}>
-            <Icon name="chat" size={30} color="#fff" />
+            <Image
+              style={{width: 40, height: 40}}
+              resizeMode="contain"
+              source={images.Chat_icon}
+            />
           </TouchableOpacity>
         </SafeAreaView>
       </Modal>
@@ -392,7 +401,11 @@ const StudyScreen = () => {
       <TouchableOpacity
         style={styles.chatButton}
         onPress={() => setShowChatScreen(true)}>
-        <Icon name="chat" size={30} color="#fff" />
+        <Image
+          style={{width: 40, height: 40}}
+          resizeMode="contain"
+          source={images.Chat_icon}
+        />
       </TouchableOpacity>
 
       <Modal

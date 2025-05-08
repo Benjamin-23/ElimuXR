@@ -43,11 +43,45 @@ const Loginscreen = props => {
         email: email,
         password: password,
       });
-      // console.log(data, 'kuna kitu');
-      if (data.user) navigation.navigate(RouteName.OTP_SCREEN);
+
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          Alert.alert(
+            'Login Failed',
+            'Incorrect email or password. Please try again.',
+          );
+        } else if (error.message.includes('User not found')) {
+          Alert.alert(
+            'User Not Found',
+            'No account exists with this email. Please register first.',
+            [
+              {
+                text: 'OK',
+                style: 'destructive',
+              },
+            ],
+            {
+              cancelable: true,
+              titleStyle: {color: Colors.danger || 'red'},
+            },
+          );
+        } else {
+          Alert.alert('Error', error.message);
+        }
+        return;
+      }
+
+      if (data.user) {
+        navigation.navigate(RouteName.HOME_SCREEN);
+      } else {
+        Alert.alert(
+          'Login Failed',
+          'Unable to log in. Please try again later.',
+        );
+      }
     } catch (error) {
       console.log(error);
-      if (error) Alert.alert(error.message);
+      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }

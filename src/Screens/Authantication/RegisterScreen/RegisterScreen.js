@@ -46,18 +46,44 @@ const Register = props => {
 
   async function signUpWithEmail() {
     setLoading(true);
-    const {
-      data: {session},
-      error,
-    } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-    });
-    if (error) Alert.alert(error.message);
-    if (!session)
-      Alert.alert('Please check your inbox for email verification!');
-    setLoading(false);
-    navigation.navigate(RouteName.REGISTER_SUCCESSFULLY);
+    try {
+      // First, check if user already exists
+      const {data: existingUser, error: checkError} =
+        await supabase.auth.signInWithPassword({
+          email: email,
+          password: password,
+        });
+
+      if (existingUser && existingUser.session) {
+        // User already exists, redirect to login
+        Alert.alert('User already exists', 'Please login instead');
+        navigation.navigate(RouteName.LOGIN_SCREEN);
+        setLoading(false);
+        return;
+      }
+
+      // User doesn't exist, proceed with signup
+      const {
+        data: {session},
+        error,
+      } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
+
+      if (error) {
+        Alert.alert(error.message);
+      }
+      if (!session) {
+        Alert.alert('Please check your inbox for email verification!');
+      }
+
+      setLoading(false);
+      navigation.navigate(RouteName.REGISTER_SUCCESSFULLY);
+    } catch (error) {
+      Alert.alert('Error during registration', error.message);
+      setLoading(false);
+    }
   }
 
   return (
@@ -91,13 +117,15 @@ const Register = props => {
                 </View>
               </View>
               <Spacing space={SH(20)} />
-              {/* <Input
-                title={t('Email_Text')}
-                placeholder={t('Email_Text')}
-                onChangeText={text => setState({...state, emailId: text})}
-                value={state.emailId}
+              <Input
+                title={t('Phone_Number')}
+                placeholder={t('Enter your phone number')}
+                onChangeText={text => setState({...state, mobileNumber: text})}
+                value={state.mobileNumber}
+                keyboardType="phone-pad"
                 placeholderTextColor={Colors.gray_text_color}
-              /> */}
+              />
+              <Spacing space={SH(20)} />
               <Input
                 label={t('Password_Text')}
                 placeholder={t('Password_Text')}
@@ -106,11 +134,6 @@ const Register = props => {
                 value={password}
               />
               <Spacing space={SH(20)} />
-              {/* <PasswordInput
-                label={t('Confirm_Password_Text')}
-                placeholder={t('Confirm_Password_Text')}
-                onChangeText={text => setPassword(text)}
-              /> */}
               <View style={Logins.FlexRowChekBox}>
                 <View style={Logins.CheckBoxView}>
                   <CheckBox
@@ -149,6 +172,8 @@ const Register = props => {
                 <Button
                   title={t('Register_Text')}
                   onPress={() => signUpWithEmail()}
+                  loading={loading}
+                  disabled={loading}
                 />
               </View>
               <Spacing space={SH(20)} />
