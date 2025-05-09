@@ -77,9 +77,17 @@ const Register = props => {
       if (!session) {
         Alert.alert('Please check your inbox for email verification!');
       }
-
+      // Only redirect to success screen if session exists (email confirmed)
+      if (session) {
+        navigation.navigate(RouteName.REGISTER_SUCCESSFULLY);
+      } else {
+        // Otherwise, user needs to confirm email first
+        Alert.alert(
+          'Please check your email',
+          'Confirm your email before continuing',
+        );
+      }
       setLoading(false);
-      navigation.navigate(RouteName.REGISTER_SUCCESSFULLY);
     } catch (error) {
       Alert.alert('Error during registration', error.message);
       setLoading(false);

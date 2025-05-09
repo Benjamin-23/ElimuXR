@@ -1,6 +1,7 @@
 const images = {
   Spalsh_Logo: require('./one_fifty.png'),
   Chat_icon: require('./chat.png'),
+  Google_Icon: require('./google.png'),
   App_Logo: require('./one_fifty.png'),
   Swiper_First: require('./LottieAnimation/GetSliderOne.json'),
   Swiper_Two: require('./LottieAnimation/GetSlidertwo.json'),

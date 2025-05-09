@@ -60,9 +60,9 @@ export default ProfileTabStyles = Colors =>
       marginBottom: 20,
     },
     ActionButtons: {
-      flexDirection: 'row',
+      display: 'flex',
+      flexDirection: 'column',
       gap: 10,
-      justifyContent: 'space-around',
     },
     EditButton: {
       backgroundColor: '#007AFF',

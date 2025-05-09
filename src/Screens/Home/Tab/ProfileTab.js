@@ -29,6 +29,7 @@ import {ProfileTabStyles, Style} from '../../../style';
 import {supabase} from '../../../lib/supabase';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
+import {decode} from 'base64-arraybuffer';
 
 const ProfileTab = props => {
   const {navigation} = props;
@@ -41,7 +42,8 @@ const ProfileTab = props => {
   const [userInfo, setUserInfo] = useState({
     phone_number: '',
     email: '',
-    fu_name: '',
+    full_name: '',
+    avatar_url: '',
   });
 
   const [editData, setEditData] = useState({
@@ -80,7 +82,7 @@ const ProfileTab = props => {
         // Try to get profile data from users table
         const {data: profileData, error: profileError} = await supabase
           .from('users')
-          .select('phone_number, full_name')
+          .select('phone_number, full_name, avatar_url')
           .eq('email', user.email)
           .maybeSingle(); // Use maybeSingle to handle no results
 
@@ -207,6 +209,7 @@ const ProfileTab = props => {
         quality: 0.8,
         maxWidth: 500,
         maxHeight: 500,
+        includeBase64: true,
       };
 
       if (source === 'camera') {
@@ -290,8 +293,11 @@ const ProfileTab = props => {
       Alert.alert('Error', response.errorMessage || 'Failed to select image');
     } else if (response.assets && response.assets[0].uri) {
       const uri = response.assets[0].uri;
+      const base64 = response.assets[0].base64;
+      console.log(base64, 'base 64');
+      console.log('select url', uri);
       setProfilePic(uri);
-      await uploadProfilePicture(uri);
+      await uploadProfilePicture(base64, uri);
     }
   };
 
@@ -368,7 +374,7 @@ const ProfileTab = props => {
   };
 
   // Function to upload the image to Supabase storage
-  const uploadProfilePicture = async uri => {
+  const uploadProfilePicture = async (base64, uri) => {
     try {
       setUploading(true);
       const {
@@ -377,27 +383,35 @@ const ProfileTab = props => {
       } = await supabase.auth.getUser();
       if (userError) throw userError;
 
+      console.log(user, 'user data');
       // Convert image to blob
-      const response = await fetch(uri);
-      const blob = await response.blob();
+
+      const blob = decode(base64);
+      console.log(blob, 'blob');
 
       // Generate unique filename
       const fileExt = uri.split('.').pop();
       const fileName = `${user.email}-${Date.now()}.${fileExt}`;
       const filePath = `profile_pictures/${fileName}`;
 
+      console.log(filePath, 'file');
+
       // Upload to Supabase storage
       const {error: uploadError, data: uploadData} = await supabase.storage
         .from('avatars') // Your bucket name
         .upload(filePath, blob);
 
+      if (uploadError) {
+        console.log(uploadError, 'noma iko apa');
+        // throw uploadError;r
+      }
       console.log(uploadData, 'user data');
-      if (uploadError) throw uploadError;
 
       // Get public URL
       const {
         data: {publicUrl},
       } = supabase.storage.from('avatars').getPublicUrl(filePath);
+      console.log(publicUrl, ' public url');
 
       // Update user profile with new image URL
       const {error: updateError} = await supabase
@@ -411,7 +425,7 @@ const ProfileTab = props => {
       setUserInfo(prev => ({...prev, avatar_url: publicUrl}));
       Alert.alert('Success', 'Profile picture updated!');
     } catch (error) {
-      console.error('Error uploading profile picture:', error);
+      console.error('Error uploading profile picture:', error.message);
       Alert.alert('Error', 'Failed to upload profile picture');
     } finally {
       setUploading(false);

@@ -97,7 +97,7 @@ function HomeTabScreenStack(props) {
             <AppHeader
               rightView={Style.RemoveBgColor}
               {...props}
-              headerTitle={t('Customesidebar_title_18')}
+              headerTitle={'ElimuXR'}
             />
           ),
           ...HeaderArray,

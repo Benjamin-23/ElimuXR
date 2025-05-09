@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking,
 } from 'react-native';
 import {
   Button,
@@ -23,7 +24,12 @@ import {Login, Style} from '../../../style';
 import {supabase} from '../../../lib/supabase';
 import {VectorIcons} from '../../../Components';
 import {StyleSheet} from 'react-native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
+GoogleSignin.configure({
+  webClientId: 'CLIENTID.apps.googleusercontent.com', // From Google Cloud Console
+  offlineAccess: false,
+});
 const Loginscreen = props => {
   const {navigation} = props;
   const [mobileNumber, setMobileNumber] = useState('');
@@ -104,6 +110,57 @@ const Loginscreen = props => {
   const onChangeText = text => {
     if (text === 'password') setpasswordVisibility(!passwordVisibility);
   };
+
+  // signin with googleusercontent
+  const signInWithGoogle = async () => {
+    try {
+      setLoading(true);
+
+      // 1. Check if device supports Google Sign-In
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+
+      // 2. Get user's ID token
+      const {idToken} = await GoogleSignin.signIn();
+
+      // 3. Sign in with Supabase
+      const {data, error} = await supabase.auth.signInWithIdToken({
+        provider: 'google',
+        token: idToken,
+      });
+      console.log(error, 'kuna error');
+
+      if (error) throw error;
+
+      // 4. If successful, navigate to home
+      if (data.session) {
+        navigation.navigate(RouteName.HOME_SCREEN);
+      }
+    } catch (error) {
+      console.error('Google Sign-In Error:', error);
+
+      let errorMessage = 'Failed to sign in with Google';
+
+      // Handle specific errors
+      if (error.code === 'SIGN_IN_CANCELLED') {
+        errorMessage = 'Sign in cancelled';
+      } else if (error.code === 'INVALID_EMAIL') {
+        errorMessage = 'Invalid email address';
+      } else if (error.code === 'auth/user-not-found') {
+        errorMessage = 'No account found. Please register first.';
+      }
+
+      Alert.alert('Error', errorMessage, [
+        {
+          text: 'Register',
+          onPress: () => navigation.navigate(RouteName.REGISTER_SCREEN),
+        },
+        {text: 'OK'},
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Container>
       <View style={Logins.MinViewScreen}>
@@ -184,6 +241,18 @@ const Loginscreen = props => {
                 </Text>
               </TouchableOpacity>
             </View>
+            <Spacing space={SH(10)} />
+            <View style={styles.socialLoginContainer}>
+              <Text style={styles.socialLoginText}>Or login with</Text>
+              <Spacing space={SH(10)} />
+              <TouchableOpacity
+                style={styles.googleButton}
+                onPress={signInWithGoogle}
+                disabled={loading}>
+                <Image source={images.Google_Icon} style={styles.googleIcon} />
+                <Text style={styles.googleButtonText}>Sign in with Google</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </ScrollView>
       </View>
@@ -197,6 +266,34 @@ const styles = StyleSheet.create({
     height: SH(50),
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  socialLoginContainer: {
+    alignItems: 'center',
+    marginVertical: SH(20),
+  },
+  socialLoginText: {
+    color: 'black',
+    fontSize: SF(16),
+  },
+  googleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    paddingVertical: SH(12),
+    paddingHorizontal: SH(25),
+    borderRadius: SH(5),
+    borderWidth: 1,
+    borderColor: 'gray',
+  },
+  googleIcon: {
+    width: SH(20),
+    height: SH(20),
+    marginRight: SH(10),
+  },
+  googleButtonText: {
+    color: '#000000',
+    fontSize: SF(16),
+    fontWeight: 'bold',
   },
 });
 export default Loginscreen;
