@@ -27,7 +27,8 @@ import {StyleSheet} from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
-  webClientId: 'CLIENTID.apps.googleusercontent.com', // From Google Cloud Console
+  webClientId:
+    '686197347745-osrovnods14krlvq3omqs1traaphr4ef.apps.googleusercontent.com', // From Google Cloud Console
   offlineAccess: false,
 });
 const Loginscreen = props => {
@@ -121,6 +122,7 @@ const Loginscreen = props => {
 
       // 2. Get user's ID token
       const {idToken} = await GoogleSignin.signIn();
+      console.log(idToken, 'token');
 
       // 3. Sign in with Supabase
       const {data, error} = await supabase.auth.signInWithIdToken({

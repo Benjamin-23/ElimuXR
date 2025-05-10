@@ -17,11 +17,13 @@ import {
   PasswordInput,
   Container,
 } from '../../../Components';
-import {SH} from '../../../Utiles';
+import {SH, SF} from '../../../Utiles';
 import {RouteName} from '../../../routes';
 import {Login, Style} from '../../../style';
 import {useTranslation} from 'react-i18next';
 import {supabase} from '../../../lib/supabase';
+import {VectorIcons} from '../../../Components';
+import {StyleSheet} from 'react-native';
 
 const Register = props => {
   const {navigation} = props;
@@ -54,10 +56,25 @@ const Register = props => {
           password: password,
         });
 
+      console.log(existingUser, 'existingUser');
+
       if (existingUser && existingUser.session) {
         // User already exists, redirect to login
         Alert.alert('User already exists', 'Please login instead');
         navigation.navigate(RouteName.LOGIN_SCREEN);
+        setLoading(false);
+        return;
+      }
+
+      if (
+        checkError &&
+        checkError.message.includes('Invalid login credentials')
+      ) {
+        // Email exists but password is wrong
+        Alert.alert(
+          'Authentication Error',
+          'Email exists but password is incorrect',
+        );
         setLoading(false);
         return;
       }
@@ -93,7 +110,10 @@ const Register = props => {
       setLoading(false);
     }
   }
-
+  const [passwordVisibility, setpasswordVisibility] = useState(true);
+  const onChangeText = text => {
+    if (text === 'password') setpasswordVisibility(!passwordVisibility);
+  };
   return (
     <Container>
       <View style={Logins.MinViewBgColor}>
@@ -111,35 +131,52 @@ const Register = props => {
               />
               <Spacing space={SH(20)} />
               <View style={Style.FlexRowPassword}>
-                <View style={Style.InputViewWidth}>
+                <View style={Logins.InputSpaceView}>
                   <Input
-                    title={t('Email')}
-                    placeholder={t('Enter your email')}
+                    title={t('Enter your Email')}
+                    placeholder={t('Enter your Email')}
                     onChangeText={text => setEmail(text)}
                     value={email}
+                    inputType="email"
                     maxLength={100}
-                    inputType="text"
                     placeholderTextColor={Colors.gray_text_color}
-                    inputStyle={Style.PaddingLeftCountryInput}
                   />
                 </View>
               </View>
               <Spacing space={SH(20)} />
               <Input
-                title={t('Phone_Number')}
+                title={t('Phone Number')}
                 placeholder={t('Enter your phone number')}
                 onChangeText={text => setState({...state, mobileNumber: text})}
                 value={state.mobileNumber}
                 keyboardType="phone-pad"
                 placeholderTextColor={Colors.gray_text_color}
               />
-              <Spacing space={SH(20)} />
+              {/* <Spacing space={SH(20)} /> */}
+
               <Input
+                title={t('Enter Password')}
+                name="password"
                 label={t('Password_Text')}
                 placeholder={t('Password_Text')}
                 onChangeText={text => setPassword(text)}
-                inputType="password"
                 value={password}
+                textContentType="newPassword"
+                secureTextEntry={passwordVisibility}
+                rightIcon={
+                  <TouchableOpacity
+                    style={styles.IconPostionAboluteTwo}
+                    onPress={() => {
+                      onChangeText('password');
+                    }}>
+                    <VectorIcons
+                      name={passwordVisibility ? 'eye-off' : 'eye'}
+                      size={SF(25)}
+                      color={Colors.gray_text_color}
+                      icon="Ionicons"
+                    />
+                  </TouchableOpacity>
+                }
               />
               <Spacing space={SH(20)} />
               <View style={Logins.FlexRowChekBox}>
@@ -205,4 +242,41 @@ const Register = props => {
     </Container>
   );
 };
+const styles = StyleSheet.create({
+  IconPostionAboluteTwo: {
+    position: 'absolute',
+    right: SH(30),
+    height: SH(50),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  socialLoginContainer: {
+    alignItems: 'center',
+    marginVertical: SH(20),
+  },
+  socialLoginText: {
+    color: 'black',
+    fontSize: SF(16),
+  },
+  googleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    paddingVertical: SH(12),
+    paddingHorizontal: SH(25),
+    borderRadius: SH(5),
+    borderWidth: 1,
+    borderColor: 'gray',
+  },
+  googleIcon: {
+    width: SH(20),
+    height: SH(20),
+    marginRight: SH(10),
+  },
+  googleButtonText: {
+    color: '#000000',
+    fontSize: SF(16),
+    fontWeight: 'bold',
+  },
+});
 export default Register;
