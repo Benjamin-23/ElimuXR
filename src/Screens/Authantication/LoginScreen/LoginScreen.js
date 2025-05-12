@@ -138,7 +138,7 @@ const Loginscreen = props => {
         navigation.navigate(RouteName.HOME_SCREEN);
       }
     } catch (error) {
-      console.error('Google Sign-In Error:', error);
+      console.error('Google Sign-In Error:', error.message);
 
       let errorMessage = 'Failed to sign in with Google';
 
