@@ -15,11 +15,12 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {queryDeepSeek} from './deepseekService';
 import ChatScreen from './chatScreen';
 import images from '../../images/index';
-import {writeScore, readScores} from '../../../scoreStorage';
-import {QuesAnsPair} from '../../Components/QuizComponets';
+import QuesAnsPair from '../../Components/QuizComponets/QuesAnsPair';
+import {writeScore} from '../../Components/QuizComponets/scoreStorage';
 import maleReproductiveQuiz from '../../../maleReproductiveQuiz.json';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Video from 'react-native-video';
+import SubjectQuesAnsPair from './QuesAnsPair';
 
 const StudyScreen = () => {
   // State management
@@ -37,6 +38,7 @@ const StudyScreen = () => {
   const [showNext, setShowNext] = useState(false);
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState({});
+  const [quizCompleted, setQuizCompleted] = useState(false);
 
   // Data structure based on your requirements
   const curriculumData = {
@@ -169,9 +171,7 @@ const StudyScreen = () => {
 
   const handleQuizTraversal = () => {
     if (quizIndex === maleReproductiveQuiz.questions.length - 1) {
-      writeScore(`${score} out of ${maleReproductiveQuiz.questions.length}`);
-      setShowQuiz(false);
-      setQuizIndex(0);
+      setQuizCompleted(true);
       return;
     }
     setQuizIndex(quizIndex + 1);
@@ -187,7 +187,15 @@ const StudyScreen = () => {
   };
 
   const getSelected = selectedOption => {
-    setSelected(selectedOption);
+    setSelected(prev => ({...prev, ...selectedOption}));
+  };
+
+  const restartQuiz = () => {
+    setQuizIndex(0);
+    setScore(0);
+    setSelected({});
+    setQuizCompleted(false);
+    setShowNext(false);
   };
   // const videoContent = {
   //   'Male Reproductive System': require(images.Male_Video), // Local file
@@ -196,6 +204,11 @@ const StudyScreen = () => {
   //   }, // Remote URL
   //   // Add more video mappings as needed
   // };
+
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  // In your Video component add:
 
   return (
     <SafeAreaView style={styles.container}>
@@ -360,7 +373,17 @@ const StudyScreen = () => {
                     paused={true} // Starts paused
                     resizeMode="contain"
                     onError={error => console.log('Video error:', error)}
+                    onProgress={({currentTime}) => setCurrentTime(currentTime)}
+                    onLoad={({duration}) => setDuration(duration)}
                   />
+                  <View style={styles.progressBar}>
+                    <View
+                      style={[
+                        styles.progressFill,
+                        {width: `${(currentTime / duration) * 100}%`},
+                      ]}
+                    />
+                  </View>
                 </View>
               </View>
               <View style={styles.learningOptions}>
@@ -410,27 +433,68 @@ const StudyScreen = () => {
                         onPress={() => setShowQuiz(false)}>
                         <Icon name="close" size={24} color={Colors.text} />
                       </TouchableOpacity>
-                      <Text style={[styles.modalTitle, {color: Colors.text}]}>
+                      <Text style={[styles.modalTitle, {color: '#000'}]}>
                         Male Reproductive System Quiz
                       </Text>
                       <View style={styles.closeButtonPlaceholder} />
                     </View>
 
                     <View style={styles.quizContentContainer}>
-                      <QuesAnsPair
-                        question={
-                          maleReproductiveQuiz.questions[quizIndex].questionText
-                        }
-                        answers={
-                          maleReproductiveQuiz.questions[quizIndex].answers
-                        }
-                        is_next={is_next}
-                        getScore={get_Score}
-                        length={maleReproductiveQuiz.questions.length}
-                        get_selected={getSelected}
-                        index={maleReproductiveQuiz.questions[quizIndex].index}
-                        colors={Colors}
-                      />
+                      {quizCompleted ? (
+                        <View style={styles.completionContainer}>
+                          <SubjectQuesAnsPair
+                            question={
+                              maleReproductiveQuiz.questions[0].questionText
+                            } // Dummy, won't be shown
+                            answers={maleReproductiveQuiz.questions[0].answers} // Dummy, won't be shown
+                            is_next={is_next}
+                            getScore={get_Score}
+                            get_selected={getSelected}
+                            index={0} // Dummy, won't be shown
+                            currentQuestionIndex={0} // Dummy, won't be shown
+                            totalQuestions={
+                              maleReproductiveQuiz.questions.length
+                            }
+                            quizCompleted={quizCompleted}
+                            userAnswers={{
+                              ...selected,
+                              score: score,
+                              questions: maleReproductiveQuiz.questions,
+                            }}
+                          />
+                          <TouchableOpacity
+                            style={styles.restartButton}
+                            onPress={restartQuiz}>
+                            <Text style={styles.restartButtonText}>
+                              Restart Quiz
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      ) : (
+                        <SubjectQuesAnsPair
+                          question={
+                            maleReproductiveQuiz.questions[quizIndex]
+                              .questionText
+                          }
+                          answers={
+                            maleReproductiveQuiz.questions[quizIndex].answers
+                          }
+                          is_next={is_next}
+                          getScore={get_Score}
+                          get_selected={getSelected}
+                          index={
+                            maleReproductiveQuiz.questions[quizIndex].index
+                          }
+                          currentQuestionIndex={quizIndex}
+                          totalQuestions={maleReproductiveQuiz.questions.length}
+                          quizCompleted={quizCompleted}
+                          userAnswers={{
+                            ...selected,
+                            score: score,
+                            questions: maleReproductiveQuiz.questions,
+                          }}
+                        />
+                      )}
 
                       <View style={styles.quizButtonContainer}>
                         {(showNext && quizIndex > 0) ||
@@ -438,7 +502,7 @@ const StudyScreen = () => {
                           <TouchableOpacity
                             style={[
                               styles.quizNavButton,
-                              {backgroundColor: Colors.primary},
+                              {backgroundColor: '#000'},
                             ]}
                             onPress={() => setQuizIndex(quizIndex - 1)}>
                             <Text style={styles.quizNavButtonText}>
@@ -448,10 +512,7 @@ const StudyScreen = () => {
                         ) : null}
 
                         <TouchableOpacity
-                          style={[
-                            styles.quizNavButton,
-                            {backgroundColor: '#000'},
-                          ]}
+                          style={[styles.quizNavButton]}
                           onPress={handleQuizTraversal}>
                           <Text style={styles.quizNavButtonText}>
                             {quizIndex ===
@@ -721,6 +782,8 @@ const styles = StyleSheet.create({
   quizContentContainer: {
     flex: 1,
     padding: 20,
+    fontSize: 16,
+    lineHeight: 24,
   },
   quizButtonContainer: {
     flexDirection: 'row',
@@ -734,7 +797,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   quizNavButtonText: {
-    color: 'white',
+    color: '#000',
     fontWeight: 'bold',
   },
   videoContainer: {
