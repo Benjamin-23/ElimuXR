@@ -9,11 +9,18 @@ import {
   TextInput,
   Modal,
   Image,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {queryDeepSeek} from './deepseekService';
 import ChatScreen from './chatScreen';
 import images from '../../images/index';
+import QuesAnsPair from '../../Components/QuizComponets/QuesAnsPair';
+import {writeScore} from '../../Components/QuizComponets/scoreStorage';
+import maleReproductiveQuiz from '../../../maleReproductiveQuiz.json';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import Video from 'react-native-video';
+import SubjectQuesAnsPair from './QuesAnsPair';
 
 const StudyScreen = () => {
   // State management
@@ -26,118 +33,86 @@ const StudyScreen = () => {
   const [showContentModal, setShowContentModal] = useState(false);
   const [showBotScreen, setShowBotScreen] = useState(false);
   const [showChatScreen, setShowChatScreen] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [quizIndex, setQuizIndex] = useState(0);
+  const [showNext, setShowNext] = useState(false);
+  const [score, setScore] = useState(0);
+  const [selected, setSelected] = useState({});
+  const [quizCompleted, setQuizCompleted] = useState(false);
 
   // Data structure based on your requirements
   const curriculumData = {
     7: {
       subjects: {
-        Mathematics: {
-          topics: {
-            '2.0. Algebra': [
-              'Algebraic Expressions',
-              'Linear Equations',
-              'Linear Inequalities',
-            ],
-            '3.0. Measurements': [
-              'Pythagorean Relationship',
-              'Length',
-              'Area',
-              'Volume and Capacity',
-            ],
-            '4.0. Geometry': ['Angles', 'Geometrical Constructions'],
-          },
-        },
         'Integrated Science': {
           topics: {
-            '3.0. Living things and the Environment': [
-              'Human reproductive system',
+            '1.0. Living things and the Environment': [
+              'Human Reproductive System',
+              'The Male Reproductive System',
+              'The Female Reproductive System',
               'Human Excretory System',
+              'Parts of the Human Skin and their Functions',
+              'Parts of the Urinary System and their Functions',
             ],
-            '4.0. Force and Energy': ['Electrical Energy', 'Magnetism'],
+            '2.0. Human Body Systems': ['The Circulatory System'],
+            '3.0. Force and Energy': ['Electrical Energy', 'Magnetism'],
           },
         },
-        'Health Education': {
+        Mathematics: {
           topics: {
-            '2.0. Human Body Systems': [
-              'Digestive system',
-              'Excretory system',
-              'Circulatory system',
-            ],
+            'Coming Soon': ['Animated content coming soon!'],
           },
         },
         'Pre-Technical Studies': {
-          topics: {}, // Add topics when available
+          topics: {
+            'Coming Soon': ['Animated content coming soon!'],
+          },
         },
       },
     },
     8: {
       subjects: {
-        Mathematics: {
-          topics: {
-            '1.0. Algebra': ['Algebraic Expressions', 'Linear Equations'],
-            '2.0. Measurements': ['Circles', 'Area', 'Money'],
-            '3.0. Geometry': [
-              'Geometrical Constructions',
-              'Coordinates and graphs',
-              'Scale Drawing',
-              'Common Solids',
-            ],
-          },
-        },
         'Integrated Science': {
           topics: {
-            '2.0. Living Things and their Environment': [
+            '1.0. Living Things and their Environment': [
               'The Cell',
-              'Movement of materials in and out of the cell',
+              'Movement of Materials In and Out of the Cell',
             ],
-            '2.0. Human Body Systems': [
-              'Respiratory system',
-              'Reproductive System',
-            ],
+            '2.0. Human Body Systems': ['Respiratory system'],
           },
         },
-        'Health Education': {
-          topics: {}, // Add topics when available
+        Mathematics: {
+          topics: {
+            'Coming Soon': ['Animated content coming soon!'],
+          },
         },
         'Pre-Technical Studies': {
           topics: {
-            'Coming Soon': [
-              'Coming Soon: Give us a like if you want this content!',
-            ],
+            'Coming Soon': ['Animated content coming soon!'],
           },
         },
       },
     },
     9: {
       subjects: {
-        Mathematics: {
-          topics: {
-            '2.0. Algebra': [
-              'Matrices',
-              'Equations of a Straight Line',
-              'Linear Inequalities',
-            ],
-            '4.0. Geometry': [
-              'Coordinates and Graphs',
-              'Scale Drawing',
-              'Similarity and Enlargement',
-              'Trigonometry',
-            ],
-          },
-        },
         'Integrated Science': {
           topics: {
-            '1.0. Mixtures, Elements and Compounds': [
+            '1.0. Human Body Systems': ['The Digestive System'],
+            '2.0. Mixtures, Elements and Compounds': [
               'Structure of the atom',
               'Metals and Alloys',
             ],
           },
         },
-        'Health Education': {
-          topics: {}, // Add topics when available
+        Mathematics: {
+          topics: {
+            'Coming Soon': ['Animated content coming soon!'],
+          },
         },
         'Pre-Technical Studies': {
-          topics: {}, // Add topics when available
+          topics: {
+            'Coming Soon': ['Animated content coming soon!'],
+          },
         },
       },
     },
@@ -193,6 +168,47 @@ const StudyScreen = () => {
       setResponse('Error connecting to DeepSeek');
     }
   };
+
+  const handleQuizTraversal = () => {
+    if (quizIndex === maleReproductiveQuiz.questions.length - 1) {
+      setQuizCompleted(true);
+      return;
+    }
+    setQuizIndex(quizIndex + 1);
+    setShowNext(false);
+  };
+
+  const is_next = () => {
+    setShowNext(true);
+  };
+
+  const get_Score = newScore => {
+    setScore(newScore);
+  };
+
+  const getSelected = selectedOption => {
+    setSelected(prev => ({...prev, ...selectedOption}));
+  };
+
+  const restartQuiz = () => {
+    setQuizIndex(0);
+    setScore(0);
+    setSelected({});
+    setQuizCompleted(false);
+    setShowNext(false);
+  };
+  // const videoContent = {
+  //   'Male Reproductive System': require(images.Male_Video), // Local file
+  //   'Female Reproductive System': {
+  //     uri: 'https://example.com/videos/female_reproductive.mp4',
+  //   }, // Remote URL
+  //   // Add more video mappings as needed
+  // };
+
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  // In your Video component add:
 
   return (
     <SafeAreaView style={styles.container}>
@@ -349,12 +365,26 @@ const StudyScreen = () => {
                   }}
                   style={styles.videoThumbnail}
                 /> */}
-                <Icon
-                  name="play-circle-filled"
-                  size={60}
-                  color="#4a90e2"
-                  style={styles.playIcon}
-                />
+                <View style={styles.videoContainer}>
+                  <Video
+                    source={images.Male_Video}
+                    style={styles.videoPlayer}
+                    controls={true}
+                    paused={true} // Starts paused
+                    resizeMode="contain"
+                    onError={error => console.log('Video error:', error)}
+                    onProgress={({currentTime}) => setCurrentTime(currentTime)}
+                    onLoad={({duration}) => setDuration(duration)}
+                  />
+                  <View style={styles.progressBar}>
+                    <View
+                      style={[
+                        styles.progressFill,
+                        {width: `${(currentTime / duration) * 100}%`},
+                      ]}
+                    />
+                  </View>
+                </View>
               </View>
               <View style={styles.learningOptions}>
                 <TouchableOpacity style={styles.optionButton}>
@@ -373,10 +403,129 @@ const StudyScreen = () => {
 
                 <TouchableOpacity
                   style={styles.optionButton}
-                  onPress={() => setShowBotScreen(true)}>
+                  onPress={() => {
+                    if (selectedTopic.includes('Male Reproductive System')) {
+                      setShowQuiz(true);
+                      setQuizIndex(0);
+                      setScore(0);
+                      setSelected({});
+                    } else {
+                      alert('Quiz for this topic is coming soon!');
+                    }
+                  }}>
                   <Icon name="quiz" size={20} color="#4a90e2" />
                   <Text style={styles.optionText}>Quiz</Text>
                 </TouchableOpacity>
+
+                {/* quiz model */}
+                <Modal
+                  visible={showQuiz}
+                  animationType="slide"
+                  transparent={false}>
+                  <SafeAreaView
+                    style={[
+                      styles.modalContainer,
+                      {backgroundColor: Colors.background},
+                    ]}>
+                    <View style={styles.modalHeader}>
+                      <TouchableOpacity
+                        style={styles.backButton}
+                        onPress={() => setShowQuiz(false)}>
+                        <Icon name="close" size={24} color={Colors.text} />
+                      </TouchableOpacity>
+                      <Text style={[styles.modalTitle, {color: '#000'}]}>
+                        Male Reproductive System Quiz
+                      </Text>
+                      <View style={styles.closeButtonPlaceholder} />
+                    </View>
+
+                    <View style={styles.quizContentContainer}>
+                      {quizCompleted ? (
+                        <View style={styles.completionContainer}>
+                          <SubjectQuesAnsPair
+                            question={
+                              maleReproductiveQuiz.questions[0].questionText
+                            } // Dummy, won't be shown
+                            answers={maleReproductiveQuiz.questions[0].answers} // Dummy, won't be shown
+                            is_next={is_next}
+                            getScore={get_Score}
+                            get_selected={getSelected}
+                            index={0} // Dummy, won't be shown
+                            currentQuestionIndex={0} // Dummy, won't be shown
+                            totalQuestions={
+                              maleReproductiveQuiz.questions.length
+                            }
+                            quizCompleted={quizCompleted}
+                            userAnswers={{
+                              ...selected,
+                              score: score,
+                              questions: maleReproductiveQuiz.questions,
+                            }}
+                          />
+                          <TouchableOpacity
+                            style={styles.restartButton}
+                            onPress={restartQuiz}>
+                            <Text style={styles.restartButtonText}>
+                              Restart Quiz
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      ) : (
+                        <SubjectQuesAnsPair
+                          question={
+                            maleReproductiveQuiz.questions[quizIndex]
+                              .questionText
+                          }
+                          answers={
+                            maleReproductiveQuiz.questions[quizIndex].answers
+                          }
+                          is_next={is_next}
+                          getScore={get_Score}
+                          get_selected={getSelected}
+                          index={
+                            maleReproductiveQuiz.questions[quizIndex].index
+                          }
+                          currentQuestionIndex={quizIndex}
+                          totalQuestions={maleReproductiveQuiz.questions.length}
+                          quizCompleted={quizCompleted}
+                          userAnswers={{
+                            ...selected,
+                            score: score,
+                            questions: maleReproductiveQuiz.questions,
+                          }}
+                        />
+                      )}
+
+                      <View style={styles.quizButtonContainer}>
+                        {(showNext && quizIndex > 0) ||
+                        (selected[quizIndex] !== undefined && quizIndex > 0) ? (
+                          <TouchableOpacity
+                            style={[
+                              styles.quizNavButton,
+                              {backgroundColor: '#000'},
+                            ]}
+                            onPress={() => setQuizIndex(quizIndex - 1)}>
+                            <Text style={styles.quizNavButtonText}>
+                              Previous
+                            </Text>
+                          </TouchableOpacity>
+                        ) : null}
+
+                        <TouchableOpacity
+                          style={[styles.quizNavButton]}
+                          onPress={handleQuizTraversal}>
+                          <Text style={styles.quizNavButtonText}>
+                            {quizIndex ===
+                            maleReproductiveQuiz.questions.length - 1
+                              ? 'Finish'
+                              : 'Next'}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </SafeAreaView>
+                </Modal>
+                {/* eend */}
               </View>
               <Text style={styles.contentDescription}>
                 Detailed content and explanations for {selectedTopic} would
@@ -571,16 +720,16 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 15,
   },
-  videoContainer: {
-    height: 200,
-    backgroundColor: '#000',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-    position: 'relative',
-    borderRadius: 8,
-    overflow: 'hidden',
-  },
+  // videoContainer: {
+  //   height: 200,
+  //   backgroundColor: '#000',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   marginBottom: 20,
+  //   position: 'relative',
+  //   borderRadius: 8,
+  //   overflow: 'hidden',
+  // },
   videoThumbnail: {
     width: '100%',
     height: '100%',
@@ -629,6 +778,39 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+  },
+  quizContentContainer: {
+    flex: 1,
+    padding: 20,
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  quizButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  quizNavButton: {
+    padding: 15,
+    borderRadius: 8,
+    minWidth: 120,
+    alignItems: 'center',
+  },
+  quizNavButtonText: {
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  videoContainer: {
+    height: Dimensions.get('window').width * 0.5625, // 16:9 aspect ratio
+    width: '100%',
+    backgroundColor: '#000',
+    marginBottom: 20,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  videoPlayer: {
+    width: '100%',
+    height: '100%',
   },
 });
 

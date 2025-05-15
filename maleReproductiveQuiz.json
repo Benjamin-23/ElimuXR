@@ -1,0 +1,360 @@
+{
+  "questions": [
+    {
+      "questionText": "Which part of the male reproductive system produces sperm?",
+      "answers": [
+        {"text": "Urethra", "correct": false},
+        {"text": "Penis", "correct": false},
+        {
+          "text": "Testes",
+          "correct": true,
+          "explanation": "The testes are responsible for producing sperm and the hormone testosterone."
+        },
+        {"text": "Prostate gland", "correct": false}
+      ],
+      "index": 1
+    },
+    {
+      "questionText": "What is the function of the epididymis?",
+      "answers": [
+        {"text": "Produces testosterone", "correct": false},
+        {
+          "text": "Stores and matures sperm",
+          "correct": true,
+          "explanation": "The epididymis stores sperm and allows them to mature before ejaculation."
+        },
+        {"text": "Produces semen", "correct": false},
+        {"text": "Filters urine", "correct": false}
+      ],
+      "index": 2
+    },
+    {
+      "questionText": "Which structure transports sperm from the epididymis to the urethra?",
+      "answers": [
+        {
+          "text": "Vas deferens",
+          "correct": true,
+          "explanation": "The vas deferens is the duct that carries sperm from the epididymis to the urethra."
+        },
+        {"text": "Ureter", "correct": false},
+        {"text": "Seminal vesicle", "correct": false},
+        {"text": "Scrotum", "correct": false}
+      ],
+      "index": 3
+    },
+    {
+      "questionText": "What is the main function of the prostate gland?",
+      "answers": [
+        {"text": "Produce sperm", "correct": false},
+        {"text": "Store urine", "correct": false},
+        {
+          "text": "Secrete fluid that nourishes sperm",
+          "correct": true,
+          "explanation": "The prostate gland produces a fluid that is part of semen, which nourishes and protects sperm."
+        },
+        {"text": "Filter blood", "correct": false}
+      ],
+      "index": 4
+    },
+    {
+      "questionText": "Which part of the male reproductive system is responsible for delivering semen during ejaculation?",
+      "answers": [
+        {"text": "Ureter", "correct": false},
+        {
+          "text": "Penis",
+          "correct": true,
+          "explanation": "The penis delivers semen into the female reproductive tract during ejaculation."
+        },
+        {"text": "Bladder", "correct": false},
+        {"text": "Scrotum", "correct": false}
+      ],
+      "index": 5
+    },
+    {
+      "questionText": "What is the role of the seminal vesicles?",
+      "answers": [
+        {"text": "Produce urine", "correct": false},
+        {"text": "Store sperm", "correct": false},
+        {"text": "Connect testes to the urethra", "correct": false},
+        {
+          "text": "Secrete fluid rich in sugars to nourish sperm",
+          "correct": true,
+          "explanation": "Seminal vesicles produce a sugary fluid that provides energy for sperm."
+        }
+      ],
+      "index": 6
+    },
+    {
+      "questionText": "Where are the testes located?",
+      "answers": [
+        {"text": "Inside the abdomen", "correct": false},
+        {
+          "text": "In the scrotum",
+          "correct": true,
+          "explanation": "The scrotum is a sac that holds and protects the testes outside the body."
+        },
+        {"text": "Behind the bladder", "correct": false},
+        {"text": "In the urethra", "correct": false}
+      ],
+      "index": 7
+    },
+    {
+      "questionText": "What is the function of the scrotum?",
+      "answers": [
+        {"text": "Produce sperm", "correct": false},
+        {"text": "Store urine", "correct": false},
+        {
+          "text": "Regulate temperature for sperm production",
+          "correct": true,
+          "explanation": "The scrotum maintains an optimal temperature for sperm production by contracting or relaxing."
+        },
+        {"text": "Secrete hormones", "correct": false}
+      ],
+      "index": 8
+    },
+    {
+      "questionText": "Which hormone is primarily produced by the testes?",
+      "answers": [
+        {
+          "text": "Testosterone",
+          "correct": true,
+          "explanation": "Testosterone is the main male sex hormone responsible for the development of male reproductive tissues and secondary sexual characteristics."
+        },
+        {"text": "Progesterone", "correct": false},
+        {"text": "Estrogen", "correct": false},
+        {"text": "Insulin", "correct": false}
+      ],
+      "index": 9
+    },
+    {
+      "questionText": "What is semen composed of?",
+      "answers": [
+        {"text": "Only sperm", "correct": false},
+        {"text": "Urine and sperm", "correct": false},
+        {
+          "text": "Sperm and fluids from accessory glands",
+          "correct": true,
+          "explanation": "Semen is a mixture of sperm and fluids from the seminal vesicles, prostate gland, and bulbourethral glands."
+        },
+        {"text": "Blood and sperm", "correct": false}
+      ],
+      "index": 10
+    },
+    {
+      "questionText": "During ejaculation, which structure prevents urine from mixing with semen?",
+      "answers": [
+        {"text": "Seminal vesicle", "correct": false},
+        {
+          "text": "Internal urethral sphincter",
+          "correct": true,
+          "explanation": "The internal urethral sphincter closes during ejaculation to prevent urine from mixing with semen."
+        },
+        {"text": "Vas deferens", "correct": false},
+        {"text": "Bladder", "correct": false}
+      ],
+      "index": 11
+    },
+    {
+      "questionText": "What is the function of the Cowper's glands?",
+      "answers": [
+        {"text": "Produce sperm", "correct": false},
+        {
+          "text": "Secrete fluid that lubricates the urethra",
+          "correct": true,
+          "explanation": "The Cowper's glands, also called the bulbourethral glands, secrete a clear fluid that lubricates the urethra for sperm to pass through."
+        },
+        {"text": "Store urine", "correct": false},
+        {"text": "Filter blood", "correct": false}
+      ],
+      "index": 12
+    },
+    {
+      "questionText": "Which pathway does sperm follow during ejaculation?",
+      "answers": [
+        {"text": "Testes → Ureter → Bladder → Urethra", "correct": false},
+        {
+          "text": "Epididymis → Vas deferens → Seminal vesicle → Urethra",
+          "correct": false
+        },
+        {"text": "Bladder → Vas deferens → Urethra → Penis", "correct": false},
+        {
+          "text": "Testes → Epididymis → Vas deferens → Urethra",
+          "correct": true,
+          "explanation": "This is the correct pathway sperm follows during ejaculation."
+        }
+      ],
+      "index": 13
+    },
+    {
+      "questionText": "Which part of the male reproductive system also functions in the excretory system?",
+      "answers": [
+        {"text": "Testes", "correct": false},
+        {
+          "text": "Urethra",
+          "correct": true,
+          "explanation": "The urethra carries both urine and semen out of the body."
+        },
+        {"text": "Vas deferens", "correct": false},
+        {"text": "Scrotum", "correct": false}
+      ],
+      "index": 14
+    },
+    {
+      "questionText": "What is the primary function of the penis in reproduction?",
+      "answers": [
+        {"text": "Produce sperm", "correct": false},
+        {"text": "Store semen", "correct": false},
+        {
+          "text": "Deliver semen into the female reproductive tract",
+          "correct": true,
+          "explanation": "The penis delivers semen during sexual intercourse."
+        },
+        {"text": "Produce hormones", "correct": false}
+      ],
+      "index": 15
+    },
+    {
+      "questionText": "What is the role of testosterone in males?",
+      "answers": [
+        {"text": "Stimulate milk production", "correct": false},
+        {
+          "text": "Develop female secondary sexual characteristics",
+          "correct": false
+        },
+        {
+          "text": "Develop male secondary sexual characteristics and sperm production",
+          "correct": true,
+          "explanation": "Testosterone is responsible for male traits and sperm production."
+        },
+        {"text": "Regulate blood sugar levels", "correct": false}
+      ],
+      "index": 16
+    },
+    {
+      "questionText": "Which structure stores sperm until they mature?",
+      "answers": [
+        {"text": "Testes", "correct": false},
+        {
+          "text": "Epididymis",
+          "correct": true,
+          "explanation": "The epididymis stores and allows sperm to mature."
+        },
+        {"text": "Vas deferens", "correct": false},
+        {"text": "Seminal vesicle", "correct": false}
+      ],
+      "index": 17
+    },
+    {
+      "questionText": "What is the function of the vas deferens?",
+      "answers": [
+        {"text": "Produce sperm", "correct": false},
+        {"text": "Store urine", "correct": false},
+        {"text": "Secrete testosterone", "correct": false},
+        {
+          "text": "Transport sperm from the epididymis to the urethra",
+          "correct": true,
+          "explanation": "The vas deferens carries sperm during ejaculation."
+        }
+      ],
+      "index": 18
+    },
+    {
+      "questionText": "Which gland contributes to the alkaline nature of semen?",
+      "answers": [
+        {"text": "Prostate gland", "correct": false},
+        {"text": "Bulbourethral gland", "correct": false},
+        {"text": "Seminal vesicle", "correct": false},
+        {
+          "text": "All of the above",
+          "correct": true,
+          "explanation": "All these glands contribute fluids that make semen alkaline, protecting sperm in the acidic environment of the vagina."
+        }
+      ],
+      "index": 19
+    },
+    {
+      "questionText": "What is the purpose of the scrotum's location outside the body?",
+      "answers": [
+        {"text": "Protection from injury", "correct": false},
+        {"text": "Aesthetic appearance", "correct": false},
+        {
+          "text": "Maintain a temperature lower than body temperature for sperm production",
+          "correct": true,
+          "explanation": "Sperm production requires a temperature slightly lower than the body's core temperature."
+        },
+        {"text": "Facilitate urination", "correct": false}
+      ],
+      "index": 20
+    },
+    {
+      "questionText": "Which part of the male reproductive system is shared with the urinary system?",
+      "answers": [
+        {"text": "Vas deferens", "correct": false},
+        {
+          "text": "Urethra",
+          "correct": true,
+          "explanation": "The urethra serves both the reproductive and urinary systems by transporting semen and urine."
+        },
+        {"text": "Epididymis", "correct": false},
+        {"text": "Seminal vesicle", "correct": false}
+      ],
+      "index": 21
+    },
+    {
+      "questionText": "What is the function of the seminal vesicles?",
+      "answers": [
+        {"text": "Store sperm", "correct": false},
+        {"text": "Produce testosterone", "correct": false},
+        {
+          "text": "Secrete a fluid rich in fructose to nourish sperm",
+          "correct": true,
+          "explanation": "The seminal vesicles produce a fructose-rich fluid that provides energy for sperm."
+        },
+        {"text": "Filter urine", "correct": false}
+      ],
+      "index": 22
+    },
+    {
+      "questionText": "Which structure is responsible for the production of sperm?",
+      "answers": [
+        {
+          "text": "Testes",
+          "correct": true,
+          "explanation": "The testes are the primary site of sperm production."
+        },
+        {"text": "Seminal vesicle", "correct": false},
+        {"text": "Epididymis", "correct": false},
+        {"text": "Prostate gland", "correct": false}
+      ],
+      "index": 23
+    },
+    {
+      "questionText": "What is the function of the prostate gland in semen production?",
+      "answers": [
+        {"text": "Produce sperm", "correct": false},
+        {
+          "text": "Secrete a fluid that activates sperm",
+          "correct": true,
+          "explanation": "The prostate gland secretes a fluid that helps activate and protect sperm."
+        },
+        {"text": "Store urine", "correct": false},
+        {"text": "Filter blood", "correct": false}
+      ],
+      "index": 24
+    },
+    {
+      "questionText": "During ejaculation, which structure ensures that semen is expelled from the body?",
+      "answers": [
+        {"text": "Ureter", "correct": false},
+        {"text": "Bladder", "correct": false},
+        {
+          "text": "Penis",
+          "correct": true,
+          "explanation": "The penis expels semen during ejaculation."
+        },
+        {"text": "Scrotum", "correct": false}
+      ],
+      "index": 25
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 const images = {
   Spalsh_Logo: require('./one_fifty.png'),
+  Male_Video: require('./maleVideo.mp4'),
   Chat_icon: require('./chat.png'),
   Google_Icon: require('./google.png'),
   App_Logo: require('./one_fifty.png'),
