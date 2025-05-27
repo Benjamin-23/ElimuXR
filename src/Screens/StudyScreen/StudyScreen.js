@@ -82,13 +82,17 @@ const StudyScreen = () => {
     8: {
       'Integrated Science': {
         '1.0. Living Things and their Environment': {
-          'The Cell': ['Cell Structure and Function'],
-          'Movement of Materials': [
-            'Movement of Materials In and Out of the Cell',
+          'The Cell': [
+            'Components of a Plant Cell and their Functions',
+            'Components of an Animal Cell and their Functions',
+          ],
+          'Movement of Materials In and Out of the Cell': [
+            'Structure and Properties of the Cell Membrane',
+            'Cellular Transport: Diffusion, Osmosis, and Active Transport',
           ],
         },
         '2.0. Human Body Systems': {
-          'Respiratory System': ['Parts and Functions of Respiratory System'],
+          'Respiratory System': ['Respiratory System'],
         },
       },
       Mathematics: {
@@ -104,12 +108,14 @@ const StudyScreen = () => {
     },
     9: {
       'Integrated Science': {
-        '1.0. Human Body Systems': {
-          'Digestive System': ['The Digestive Process'],
+        '1.0. Mixtures, Elements and Compounds': {
+          'Structure of the Atom': [
+            'Structure of the atom',
+            'Metals and Alloys',
+          ],
         },
-        '2.0. Mixtures, Elements and Compounds': {
-          'Structure of the Atom': ['Atomic Structure'],
-          'Metals and Alloys': ['Properties of Metals'],
+        '2.0. Living Things and their Environment': {
+          'Nutrition in Animals ': ['The Digestive System'],
         },
       },
       Mathematics: {
