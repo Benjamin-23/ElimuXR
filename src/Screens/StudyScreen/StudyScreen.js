@@ -6,7 +6,6 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  TextInput,
   Modal,
   Image,
   Dimensions,
@@ -24,14 +23,16 @@ import SubjectQuesAnsPair from './QuesAnsPair';
 
 const StudyScreen = () => {
   // State management
-  const [selectedGrade, setSelectedGrade] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [favorites, setFavorites] = useState([]);
+  const [selectedGrade, setSelectedGrade] = useState('7');
   const [selectedSubject, setSelectedSubject] = useState(null);
-  const [selectedTopic, setSelectedTopic] = useState(null);
-  const [showTopicsModal, setShowTopicsModal] = useState(false);
+  const [selectedStrand, setSelectedStrand] = useState(null);
+  const [selectedSubStrand, setSelectedSubStrand] = useState(null);
+  const [showGrades, setShowGrades] = useState(false); // Add this state for grade dropdown
+  const [showSubjects, setShowSubjects] = useState(false);
+  const [showStrands, setShowStrands] = useState(false);
+  const [showSubStrands, setShowSubStrands] = useState(false);
+  const [expandedStrands, setExpandedStrands] = useState({});
   const [showContentModal, setShowContentModal] = useState(false);
-  const [showBotScreen, setShowBotScreen] = useState(false);
   const [showChatScreen, setShowChatScreen] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizIndex, setQuizIndex] = useState(0);
@@ -40,135 +41,174 @@ const StudyScreen = () => {
   const [selected, setSelected] = useState({});
   const [quizCompleted, setQuizCompleted] = useState(false);
 
-  // Data structure based on your requirements
-  const curriculumData = {
+  // Available grades
+  const availableGrades = ['7', '8', '9'];
+
+  // Updated curriculum data structure to match the screenshots
+  const curriculum = {
     7: {
-      subjects: {
-        'Integrated Science': {
-          topics: {
-            '1.0. Living things and the Environment': [
-              'Human Reproductive System',
-              'The Male Reproductive System',
-              'The Female Reproductive System',
-              'Human Excretory System',
-              'Parts of the Human Skin and their Functions',
-              'Parts of the Urinary System and their Functions',
-            ],
-            '2.0. Human Body Systems': ['The Circulatory System'],
-            '3.0. Force and Energy': ['Electrical Energy', 'Magnetism'],
-          },
+      'Integrated Science': {
+        '1.0. Living things and the Environment': {
+          'Human Reproductive System': [
+            'The Male Reproductive System',
+            'The Female Reproductive System',
+          ],
+          'Human Excretory System': [
+            'Parts of the Human Skin and their Functions',
+            'The Urinary System',
+            'Parts of the Kidney and their Functions',
+          ],
         },
-        Mathematics: {
-          topics: {
-            'Coming Soon': ['Animated content coming soon!'],
-          },
+        '2.0. Human Body Systems': {
+          'Digestive System': ['Digestive System'],
+          'Circulatory System': ['Circulatory System'],
         },
-        'Pre-Technical Studies': {
-          topics: {
-            'Coming Soon': ['Animated content coming soon!'],
-          },
+        '3.0. Force and Energy': {
+          'Electrical Energy': ['Simple Electrical Circuits'],
+          Magnetism: ['Properties of a Magnet'],
+        },
+      },
+      Mathematics: {
+        'Coming Soon': {
+          Placeholder: ['Animated content coming soon!'],
+        },
+      },
+      'Pre-Technical Studies': {
+        'Coming Soon': {
+          Placeholder: ['Animated content coming soon!'],
         },
       },
     },
     8: {
-      subjects: {
-        'Integrated Science': {
-          topics: {
-            '1.0. Living Things and their Environment': [
-              'The Cell',
-              'Movement of Materials In and Out of the Cell',
-            ],
-            '2.0. Human Body Systems': ['Respiratory system'],
-          },
+      'Integrated Science': {
+        '1.0. Living Things and their Environment': {
+          'The Cell': [
+            'Components of a Plant Cell and their Functions',
+            'Components of an Animal Cell and their Functions',
+          ],
+          'Movement of Materials In and Out of the Cell': [
+            'Structure and Properties of the Cell Membrane',
+            'Cellular Transport: Diffusion, Osmosis, and Active Transport',
+          ],
         },
-        Mathematics: {
-          topics: {
-            'Coming Soon': ['Animated content coming soon!'],
-          },
+        '2.0. Human Body Systems': {
+          'Respiratory System': ['Respiratory System'],
         },
-        'Pre-Technical Studies': {
-          topics: {
-            'Coming Soon': ['Animated content coming soon!'],
-          },
+      },
+      Mathematics: {
+        'Coming Soon': {
+          Placeholder: ['Animated content coming soon!'],
+        },
+      },
+      'Pre-Technical Studies': {
+        'Coming Soon': {
+          Placeholder: ['Animated content coming soon!'],
         },
       },
     },
     9: {
-      subjects: {
-        'Integrated Science': {
-          topics: {
-            '1.0. Human Body Systems': ['The Digestive System'],
-            '2.0. Mixtures, Elements and Compounds': [
-              'Structure of the atom',
-              'Metals and Alloys',
-            ],
-          },
+      'Integrated Science': {
+        '1.0. Mixtures, Elements and Compounds': {
+          'Structure of the Atom': [
+            'Structure of the atom',
+            'Metals and Alloys',
+          ],
         },
-        Mathematics: {
-          topics: {
-            'Coming Soon': ['Animated content coming soon!'],
-          },
+        '2.0. Living Things and their Environment': {
+          'Nutrition in Animals ': ['The Digestive System'],
         },
-        'Pre-Technical Studies': {
-          topics: {
-            'Coming Soon': ['Animated content coming soon!'],
-          },
+      },
+      Mathematics: {
+        'Coming Soon': {
+          Placeholder: ['Animated content coming soon!'],
+        },
+      },
+      'Pre-Technical Studies': {
+        'Coming Soon': {
+          Placeholder: ['Animated content coming soon!'],
         },
       },
     },
   };
 
-  const grades = [
-    {id: 7, name: 'Grade 7'},
-    {id: 8, name: 'Grade 8'},
-    {id: 9, name: 'Grade 9'},
-  ];
-
-  // Helper functions
-  const handleGradeSelect = grade => {
-    setSelectedGrade(grade);
-    setSearchQuery('');
-    setSelectedSubject(null);
-    setSelectedTopic(null);
+  // Get available options based on current selections
+  const getAvailableSubjects = () => {
+    return Object.keys(curriculum[selectedGrade] || {});
   };
 
-  const toggleFavorite = subject => {
-    if (favorites.includes(subject)) {
-      setFavorites(favorites.filter(fav => fav !== subject));
-    } else {
-      setFavorites([...favorites, subject]);
+  const getAvailableStrands = () => {
+    if (
+      !selectedSubject ||
+      !curriculum[selectedGrade] ||
+      !curriculum[selectedGrade][selectedSubject]
+    ) {
+      return [];
     }
+    return Object.keys(curriculum[selectedGrade][selectedSubject]);
   };
 
-  const handleSubjectPress = subject => {
+  const getAvailableSubStrands = () => {
+    if (
+      !selectedSubject ||
+      !selectedStrand ||
+      !curriculum[selectedGrade] ||
+      !curriculum[selectedGrade][selectedSubject] ||
+      !curriculum[selectedGrade][selectedSubject][selectedStrand]
+    ) {
+      return [];
+    }
+    return Object.keys(
+      curriculum[selectedGrade][selectedSubject][selectedStrand],
+    );
+  };
+
+  // Handler functions
+  const handleGradeChange = grade => {
+    setSelectedGrade(grade);
+    setSelectedSubject(null);
+    setSelectedStrand(null);
+    setSelectedSubStrand(null);
+    setShowGrades(false); // Close grade dropdown
+    setShowSubjects(false);
+    setShowStrands(false);
+    setShowSubStrands(false);
+    setExpandedStrands({});
+  };
+
+  const handleSubjectSelect = subject => {
     setSelectedSubject(subject);
-    setShowTopicsModal(true);
+    setSelectedStrand(null);
+    setSelectedSubStrand(null);
+    setShowSubjects(false);
+    setShowStrands(false);
+    setShowSubStrands(false);
+    setExpandedStrands({});
   };
 
-  const handleTopicPress = topic => {
-    setSelectedTopic(topic);
-    setShowTopicsModal(false);
+  const handleStrandSelect = strand => {
+    setSelectedStrand(strand);
+    setSelectedSubStrand(null);
+    setShowStrands(false);
+    setShowSubStrands(false);
+  };
+
+  const handleSubStrandSelect = subStrand => {
+    setSelectedSubStrand(subStrand);
+    setShowSubStrands(false);
+  };
+
+  const toggleStrandExpansion = strand => {
+    setExpandedStrands(prev => ({
+      ...prev,
+      [strand]: !prev[strand],
+    }));
+  };
+
+  const handleLessonPress = lesson => {
     setShowContentModal(true);
   };
 
-  const filteredSubjects = selectedGrade
-    ? Object.keys(curriculumData[selectedGrade].subjects).filter(subject =>
-        subject.toLowerCase().includes(searchQuery.toLowerCase()),
-      )
-    : [];
-
-  const [input, setInput] = useState('');
-  const [response, setResponse] = useState('');
-
-  const handleSubmit = async () => {
-    try {
-      const result = await queryDeepSeek(input);
-      setResponse(result.choices[0].message.content);
-    } catch (error) {
-      setResponse('Error connecting to DeepSeek');
-    }
-  };
-
+  // Quiz functions
   const handleQuizTraversal = () => {
     if (quizIndex === maleReproductiveQuiz.questions.length - 1) {
       setQuizCompleted(true);
@@ -197,143 +237,254 @@ const StudyScreen = () => {
     setQuizCompleted(false);
     setShowNext(false);
   };
-  // const videoContent = {
-  //   'Male Reproductive System': require(images.Male_Video), // Local file
-  //   'Female Reproductive System': {
-  //     uri: 'https://example.com/videos/female_reproductive.mp4',
-  //   }, // Remote URL
-  //   // Add more video mappings as needed
-  // };
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  // In your Video component add:
+  // Check if we should show curriculum or placeholder message
+  const shouldShowCurriculum =
+    selectedSubject && selectedSubject !== 'Select Subject';
+  const shouldShowPlaceholder = !shouldShowCurriculum;
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Select Your Grade</Text>
+      <ScrollView
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}>
+        {/* Grade Dropdown */}
+        <TouchableOpacity
+          style={styles.dropdownButton}
+          onPress={() => setShowGrades(!showGrades)} // Fixed the onPress handler
+        >
+          <Text style={styles.dropdownText}>Grade {selectedGrade}</Text>
+          <Icon name="keyboard-arrow-down" size={24} color="#fff" />
+        </TouchableOpacity>
 
-      <View style={styles.gradeContainer}>
-        {grades.map(grade => (
-          <TouchableOpacity
-            key={grade.id}
-            style={[
-              styles.gradeButton,
-              selectedGrade === grade.id && styles.selectedGradeButton,
-            ]}
-            onPress={() => handleGradeSelect(grade.id)}>
-            <Text
-              style={[
-                styles.gradeText,
-                selectedGrade === grade.id && styles.selectedGradeText,
-              ]}>
-              {grade.name}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      {selectedGrade && (
-        <View style={styles.contentContainer}>
-          <View style={styles.searchContainer}>
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search subjects..."
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
-            <Icon
-              name="search"
-              size={24}
-              color="#666"
-              style={styles.searchIcon}
-            />
-          </View>
-
-          <Text style={styles.subHeader}>
-            Subjects for Grade {selectedGrade}
-            {searchQuery && ` (${filteredSubjects.length} found)`}
-          </Text>
-
-          <ScrollView>
-            {filteredSubjects.map((subject, index) => (
+        {/* Grade Options */}
+        {showGrades && (
+          <View style={styles.dropdownOptionsContainer}>
+            {availableGrades.map((grade, index) => (
               <TouchableOpacity
                 key={index}
-                style={styles.subjectItem}
-                onPress={() => handleSubjectPress(subject)}>
-                <View style={styles.subjectHeader}>
-                  <Text style={styles.subjectText}>{subject}</Text>
-                  <TouchableOpacity
-                    onPress={e => {
-                      e.stopPropagation();
-                      toggleFavorite(subject);
-                    }}>
-                    <Icon
-                      name={
-                        favorites.includes(subject) ? 'star' : 'star-outline'
-                      }
-                      size={24}
-                      color={favorites.includes(subject) ? '#FFD700' : '#666'}
-                    />
-                  </TouchableOpacity>
-                </View>
+                style={[
+                  styles.dropdownOption,
+                  selectedGrade === grade && styles.selectedDropdownOption,
+                ]}
+                onPress={() => handleGradeChange(grade)}>
+                <Text
+                  style={[
+                    styles.dropdownOptionText,
+                    selectedGrade === grade &&
+                      styles.selectedDropdownOptionText,
+                  ]}>
+                  Grade {grade}
+                </Text>
+                {selectedGrade === grade && (
+                  <Icon
+                    name="check"
+                    size={16}
+                    color="#4CAF50"
+                    style={styles.checkIcon}
+                  />
+                )}
               </TouchableOpacity>
             ))}
-          </ScrollView>
-        </View>
-      )}
-
-      {/* Topics Modal */}
-      <Modal
-        visible={showTopicsModal}
-        animationType="slide"
-        transparent={false}
-        onRequestClose={() => setShowTopicsModal(false)}>
-        <SafeAreaView style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => setShowTopicsModal(false)}>
-              <Icon name="arrow-back" size={24} color="#666" />
-            </TouchableOpacity>
-            <Text style={styles.modalTitle}>{selectedSubject}</Text>
-            <View style={styles.closeButtonPlaceholder} />
           </View>
+        )}
 
-          <ScrollView style={styles.topicsContainer}>
-            {selectedSubject &&
-              selectedGrade &&
-              Object.entries(
-                curriculumData[selectedGrade].subjects[selectedSubject].topics,
-              ).map(([topicNumber, subtopics], index) => (
-                <View key={index}>
-                  <Text style={styles.topicNumber}>{topicNumber}</Text>
-                  {subtopics.map((subtopic, subIndex) => (
-                    <TouchableOpacity
-                      key={subIndex}
-                      style={styles.topicItem}
-                      onPress={() =>
-                        handleTopicPress(`${topicNumber}: ${subtopic}`)
-                      }>
-                      <Text style={styles.topicText}>{subtopic}</Text>
-                      <Icon name="chevron-right" size={20} color="#666" />
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              ))}
-          </ScrollView>
+        {/* Subject Dropdown */}
+        <TouchableOpacity
+          style={styles.dropdownButton}
+          onPress={() => setShowSubjects(!showSubjects)}>
+          <Text
+            style={[
+              styles.dropdownText,
+              !selectedSubject && styles.placeholderText,
+            ]}>
+            {selectedSubject || 'Select Subject'}
+          </Text>
+          <Icon name="keyboard-arrow-down" size={24} color="#fff" />
+        </TouchableOpacity>
+
+        {/* Subject Options */}
+        {showSubjects && (
+          <View style={styles.dropdownOptionsContainer}>
+            {getAvailableSubjects().map((subject, index) => (
+              <TouchableOpacity
+                key={index}
+                style={[
+                  styles.dropdownOption,
+                  selectedSubject === subject && styles.selectedDropdownOption,
+                ]}
+                onPress={() => handleSubjectSelect(subject)}>
+                <Text
+                  style={[
+                    styles.dropdownOptionText,
+                    selectedSubject === subject &&
+                      styles.selectedDropdownOptionText,
+                  ]}>
+                  {subject}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+
+        {/* Strand Dropdown - Only show if subject is selected */}
+        {selectedSubject && (
           <TouchableOpacity
-            style={styles.chatButton}
-            onPress={() => setShowChatScreen(true)}>
-            <Image
-              style={{width: 40, height: 40}}
-              resizeMode="contain"
-              source={images.Chat_icon}
-            />
+            style={styles.dropdownButton}
+            onPress={() => setShowStrands(!showStrands)}>
+            <Text
+              style={[
+                styles.dropdownText,
+                !selectedStrand && styles.placeholderText,
+              ]}>
+              {selectedStrand || 'Living things and the Environment'}
+            </Text>
+            <Icon name="keyboard-arrow-down" size={24} color="#fff" />
           </TouchableOpacity>
-        </SafeAreaView>
-      </Modal>
+        )}
+
+        {/* Strand Options */}
+        {showStrands && selectedSubject && (
+          <View style={styles.dropdownOptionsContainer}>
+            {getAvailableStrands().map((strand, index) => (
+              <TouchableOpacity
+                key={index}
+                style={[
+                  styles.dropdownOption,
+                  selectedStrand === strand && styles.selectedDropdownOption,
+                ]}
+                onPress={() => handleStrandSelect(strand)}>
+                <Text
+                  style={[
+                    styles.dropdownOptionText,
+                    selectedStrand === strand &&
+                      styles.selectedDropdownOptionText,
+                  ]}>
+                  {strand}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+
+        {/* Sub-Strand Dropdown - Only show if strand is selected */}
+        {selectedStrand && (
+          <TouchableOpacity
+            style={styles.dropdownButton}
+            onPress={() => setShowSubStrands(!showSubStrands)}>
+            <Text
+              style={[
+                styles.dropdownText,
+                !selectedSubStrand && styles.placeholderText,
+              ]}>
+              {selectedSubStrand || 'Human Reproductive System'}
+            </Text>
+            <Icon name="keyboard-arrow-down" size={24} color="#fff" />
+          </TouchableOpacity>
+        )}
+
+        {/* Sub-Strand Options */}
+        {showSubStrands && selectedStrand && (
+          <View style={styles.dropdownOptionsContainer}>
+            {getAvailableSubStrands().map((subStrand, index) => {
+              const isSelected = selectedSubStrand === subStrand;
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.dropdownOption,
+                    isSelected && styles.selectedDropdownOption,
+                  ]}
+                  onPress={() => handleSubStrandSelect(subStrand)}>
+                  {isSelected && (
+                    <Icon
+                      name="check"
+                      size={16}
+                      color="#4CAF50"
+                      style={styles.checkIcon}
+                    />
+                  )}
+                  <Text
+                    style={[
+                      styles.dropdownOptionText,
+                      isSelected && styles.selectedDropdownOptionText,
+                    ]}>
+                    {subStrand}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        )}
+
+        {/* Lesson Dropdown - Static */}
+        {selectedSubStrand && (
+          <TouchableOpacity style={styles.dropdownButton}>
+            <Text style={styles.placeholderText}>Select Lesson</Text>
+            <Icon name="keyboard-arrow-down" size={24} color="#fff" />
+          </TouchableOpacity>
+        )}
+
+        {/* Curriculum Display or Placeholder */}
+        {shouldShowPlaceholder ? (
+          <View style={styles.placeholderContainer}>
+            <Text style={styles.placeholderText}>
+              Please select a grade and subject{'\n'}to view the curriculum
+            </Text>
+          </View>
+        ) : (
+          <View style={styles.curriculumContainer}>
+            <Text style={styles.curriculumTitle}>
+              {selectedSubject} Curriculum - Grade {selectedGrade}
+            </Text>
+
+            {/* Curriculum Sections */}
+            {getAvailableStrands().map((strand, index) => (
+              <View key={index} style={styles.curriculumSection}>
+                <TouchableOpacity
+                  style={styles.sectionHeader}
+                  onPress={() => toggleStrandExpansion(strand)}>
+                  <Icon name="folder" size={20} color="#FFD700" />
+                  <Text style={styles.sectionTitle}>{strand}</Text>
+                  <Icon
+                    name={
+                      expandedStrands[strand]
+                        ? 'keyboard-arrow-up'
+                        : 'keyboard-arrow-down'
+                    }
+                    size={20}
+                    color="#fff"
+                  />
+                </TouchableOpacity>
+
+                {/* Expanded Content */}
+                {expandedStrands[strand] && (
+                  <View style={styles.sectionContent}>
+                    {Object.entries(
+                      curriculum[selectedGrade][selectedSubject][strand] || {},
+                    ).map(([subStrand, lessons], subIndex) => (
+                      <View key={subIndex} style={styles.subStrandContainer}>
+                        <Text style={styles.subStrandTitle}>{subStrand}</Text>
+                        {lessons.map((lesson, lessonIndex) => (
+                          <TouchableOpacity
+                            key={lessonIndex}
+                            style={styles.lessonItem}
+                            onPress={() => handleLessonPress(lesson)}>
+                            <Text style={styles.lessonText}>{lesson}</Text>
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+                    ))}
+                  </View>
+                )}
+              </View>
+            ))}
+          </View>
+        )}
+      </ScrollView>
 
       {/* Content Modal */}
       <Modal
@@ -345,13 +496,10 @@ const StudyScreen = () => {
           <View style={styles.modalHeader}>
             <TouchableOpacity
               style={styles.backButton}
-              onPress={() => {
-                setShowContentModal(false);
-                setShowTopicsModal(true);
-              }}>
+              onPress={() => setShowContentModal(false)}>
               <Icon name="arrow-back" size={24} color="#666" />
             </TouchableOpacity>
-            <Text style={styles.modalTitle}>{selectedTopic}</Text>
+            <Text style={styles.modalTitle}>Lesson Content</Text>
             <View style={styles.closeButtonPlaceholder} />
           </View>
 
@@ -359,33 +507,26 @@ const StudyScreen = () => {
             <View style={styles.learningContent}>
               <Text style={styles.contentTitle}>Learning Materials</Text>
               <View style={styles.videoContainer}>
-                {/* <Image
-                  source={{
-                    uri: 'https://via.placeholder.com/400x225?text=Video+Thumbnail',
-                  }}
-                  style={styles.videoThumbnail}
-                /> */}
-                <View style={styles.videoContainer}>
-                  <Video
-                    source={images.Male_Video}
-                    style={styles.videoPlayer}
-                    controls={true}
-                    paused={true} // Starts paused
-                    resizeMode="contain"
-                    onError={error => console.log('Video error:', error)}
-                    onProgress={({currentTime}) => setCurrentTime(currentTime)}
-                    onLoad={({duration}) => setDuration(duration)}
+                <Video
+                  source={images.Male_Video}
+                  style={styles.videoPlayer}
+                  controls={true}
+                  paused={true}
+                  resizeMode="contain"
+                  onError={error => console.log('Video error:', error)}
+                  onProgress={({currentTime}) => setCurrentTime(currentTime)}
+                  onLoad={({duration}) => setDuration(duration)}
+                />
+                <View style={styles.progressBar}>
+                  <View
+                    style={[
+                      styles.progressFill,
+                      {width: `${(currentTime / duration) * 100}%`},
+                    ]}
                   />
-                  <View style={styles.progressBar}>
-                    <View
-                      style={[
-                        styles.progressFill,
-                        {width: `${(currentTime / duration) * 100}%`},
-                      ]}
-                    />
-                  </View>
                 </View>
               </View>
+
               <View style={styles.learningOptions}>
                 <TouchableOpacity style={styles.optionButton}>
                   <Icon name="play-circle-outline" size={20} color="#4a90e2" />
@@ -395,146 +536,30 @@ const StudyScreen = () => {
                   <Icon name="3d-rotation" size={20} color="#4a90e2" />
                   <Text style={styles.optionText}>AR Model</Text>
                 </TouchableOpacity>
-
                 <TouchableOpacity style={styles.optionButton}>
                   <Icon name="vrpano" size={20} color="#4a90e2" />
                   <Text style={styles.optionText}>VR</Text>
                 </TouchableOpacity>
-
                 <TouchableOpacity
                   style={styles.optionButton}
                   onPress={() => {
-                    if (selectedTopic.includes('Male Reproductive System')) {
-                      setShowQuiz(true);
-                      setQuizIndex(0);
-                      setScore(0);
-                      setSelected({});
-                    } else {
-                      alert('Quiz for this topic is coming soon!');
-                    }
+                    setShowQuiz(true);
+                    setQuizIndex(0);
+                    setScore(0);
+                    setSelected({});
                   }}>
                   <Icon name="quiz" size={20} color="#4a90e2" />
                   <Text style={styles.optionText}>Quiz</Text>
                 </TouchableOpacity>
-
-                {/* quiz model */}
-                <Modal
-                  visible={showQuiz}
-                  animationType="slide"
-                  transparent={false}>
-                  <SafeAreaView
-                    style={[
-                      styles.modalContainer,
-                      {backgroundColor: Colors.background},
-                    ]}>
-                    <View style={styles.modalHeader}>
-                      <TouchableOpacity
-                        style={styles.backButton}
-                        onPress={() => setShowQuiz(false)}>
-                        <Icon name="close" size={24} color={Colors.text} />
-                      </TouchableOpacity>
-                      <Text style={[styles.modalTitle, {color: '#000'}]}>
-                        Male Reproductive System Quiz
-                      </Text>
-                      <View style={styles.closeButtonPlaceholder} />
-                    </View>
-
-                    <View style={styles.quizContentContainer}>
-                      {quizCompleted ? (
-                        <View style={styles.completionContainer}>
-                          <SubjectQuesAnsPair
-                            question={
-                              maleReproductiveQuiz.questions[0].questionText
-                            } // Dummy, won't be shown
-                            answers={maleReproductiveQuiz.questions[0].answers} // Dummy, won't be shown
-                            is_next={is_next}
-                            getScore={get_Score}
-                            get_selected={getSelected}
-                            index={0} // Dummy, won't be shown
-                            currentQuestionIndex={0} // Dummy, won't be shown
-                            totalQuestions={
-                              maleReproductiveQuiz.questions.length
-                            }
-                            quizCompleted={quizCompleted}
-                            userAnswers={{
-                              ...selected,
-                              score: score,
-                              questions: maleReproductiveQuiz.questions,
-                            }}
-                          />
-                          <TouchableOpacity
-                            style={styles.restartButton}
-                            onPress={restartQuiz}>
-                            <Text style={styles.restartButtonText}>
-                              Restart Quiz
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                      ) : (
-                        <SubjectQuesAnsPair
-                          question={
-                            maleReproductiveQuiz.questions[quizIndex]
-                              .questionText
-                          }
-                          answers={
-                            maleReproductiveQuiz.questions[quizIndex].answers
-                          }
-                          is_next={is_next}
-                          getScore={get_Score}
-                          get_selected={getSelected}
-                          index={
-                            maleReproductiveQuiz.questions[quizIndex].index
-                          }
-                          currentQuestionIndex={quizIndex}
-                          totalQuestions={maleReproductiveQuiz.questions.length}
-                          quizCompleted={quizCompleted}
-                          userAnswers={{
-                            ...selected,
-                            score: score,
-                            questions: maleReproductiveQuiz.questions,
-                          }}
-                        />
-                      )}
-
-                      <View style={styles.quizButtonContainer}>
-                        {(showNext && quizIndex > 0) ||
-                        (selected[quizIndex] !== undefined && quizIndex > 0) ? (
-                          <TouchableOpacity
-                            style={[
-                              styles.quizNavButton,
-                              {backgroundColor: '#000'},
-                            ]}
-                            onPress={() => setQuizIndex(quizIndex - 1)}>
-                            <Text style={styles.quizNavButtonText}>
-                              Previous
-                            </Text>
-                          </TouchableOpacity>
-                        ) : null}
-
-                        <TouchableOpacity
-                          style={[styles.quizNavButton]}
-                          onPress={handleQuizTraversal}>
-                          <Text style={styles.quizNavButtonText}>
-                            {quizIndex ===
-                            maleReproductiveQuiz.questions.length - 1
-                              ? 'Finish'
-                              : 'Next'}
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </SafeAreaView>
-                </Modal>
-                {/* eend */}
               </View>
+
               <Text style={styles.contentDescription}>
-                Detailed content and explanations for {selectedTopic} would
-                appear here. This could include text lessons, diagrams,
-                examples, and practice problems.
+                Detailed content and explanations would appear here. This could
+                include text lessons, diagrams, examples, and practice problems.
               </Text>
-              {/* {showBotScreen && <ChatScreen />} */}
             </View>
           </ScrollView>
+
           <TouchableOpacity
             style={styles.chatButton}
             onPress={() => setShowChatScreen(true)}>
@@ -547,16 +572,93 @@ const StudyScreen = () => {
         </SafeAreaView>
       </Modal>
 
-      <TouchableOpacity
-        style={styles.chatButton}
-        onPress={() => setShowChatScreen(true)}>
-        <Image
-          style={{width: 40, height: 40}}
-          resizeMode="contain"
-          source={images.Chat_icon}
-        />
-      </TouchableOpacity>
+      {/* Quiz Modal */}
+      <Modal visible={showQuiz} animationType="slide" transparent={false}>
+        <SafeAreaView
+          style={[styles.modalContainer, {backgroundColor: Colors.background}]}>
+          <View style={styles.modalHeader}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => setShowQuiz(false)}>
+              <Icon name="close" size={24} color={Colors.text} />
+            </TouchableOpacity>
+            <Text style={[styles.modalTitle, {color: '#000'}]}>
+              Male Reproductive System Quiz
+            </Text>
+            <View style={styles.closeButtonPlaceholder} />
+          </View>
 
+          <View style={styles.quizContentContainer}>
+            {quizCompleted ? (
+              <View style={styles.completionContainer}>
+                <SubjectQuesAnsPair
+                  question={maleReproductiveQuiz.questions[0].questionText}
+                  answers={maleReproductiveQuiz.questions[0].answers}
+                  is_next={false}
+                  getScore={get_Score}
+                  get_selected={getSelected}
+                  index={0}
+                  currentQuestionIndex={0}
+                  totalQuestions={maleReproductiveQuiz.questions.length}
+                  quizCompleted={quizCompleted}
+                  userAnswers={{
+                    ...selected,
+                    score: score,
+                    questions: maleReproductiveQuiz.questions,
+                  }}
+                />
+                <TouchableOpacity
+                  style={styles.restartButton}
+                  onPress={restartQuiz}>
+                  <Text style={styles.restartButtonText}>Restart Quiz</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <SubjectQuesAnsPair
+                question={
+                  maleReproductiveQuiz.questions[quizIndex].questionText
+                }
+                answers={maleReproductiveQuiz.questions[quizIndex].answers}
+                is_next={is_next}
+                getScore={get_Score}
+                get_selected={getSelected}
+                index={maleReproductiveQuiz.questions[quizIndex].index}
+                currentQuestionIndex={quizIndex}
+                totalQuestions={maleReproductiveQuiz.questions.length}
+                quizCompleted={quizCompleted}
+                userAnswers={{
+                  ...selected,
+                  score: score,
+                  questions: maleReproductiveQuiz.questions,
+                }}
+              />
+            )}
+
+            <View style={styles.quizButtonContainer}>
+              {(showNext && quizIndex > 0) ||
+              (selected[quizIndex] !== undefined && quizIndex > 0) ? (
+                <TouchableOpacity
+                  style={[styles.quizNavButton, {backgroundColor: '#000'}]}
+                  onPress={() => setQuizIndex(quizIndex - 1)}>
+                  <Text style={styles.quizNavButtonText}>Previous</Text>
+                </TouchableOpacity>
+              ) : null}
+
+              <TouchableOpacity
+                style={[styles.quizNavButton]}
+                onPress={handleQuizTraversal}>
+                <Text style={styles.quizNavButtonText}>
+                  {quizIndex === maleReproductiveQuiz.questions.length - 1
+                    ? 'Finish'
+                    : 'Next'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
+
+      {/* Chat Modal */}
       <Modal
         visible={showChatScreen}
         animationType="slide"
@@ -575,6 +677,17 @@ const StudyScreen = () => {
           <ChatScreen />
         </SafeAreaView>
       </Modal>
+
+      {/* Floating Chat Button */}
+      <TouchableOpacity
+        style={styles.chatButton}
+        onPress={() => setShowChatScreen(true)}>
+        <Image
+          style={{width: 40, height: 40}}
+          resizeMode="contain"
+          source={images.Chat_icon}
+        />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -582,85 +695,121 @@ const StudyScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-    padding: 20,
+    backgroundColor: '#1a1a1a',
   },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 20,
-    textAlign: 'center',
+  scrollContainer: {
+    flex: 1,
+    padding: 16,
   },
-  gradeContainer: {
+  dropdownButton: {
+    backgroundColor: '#2d2d2d',
+    borderRadius: 8,
+    padding: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    alignItems: 'center',
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#404040',
   },
-  gradeButton: {
-    backgroundColor: '#e0e0e0',
-    padding: 15,
-    borderRadius: 10,
-    width: '30%',
+  dropdownText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  placeholderText: {
+    color: '#888',
+  },
+  dropdownOptionsContainer: {
+    backgroundColor: '#2d2d2d',
+    borderRadius: 8,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#404040',
+    overflow: 'hidden',
+  },
+  dropdownOption: {
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#404040',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  selectedDropdownOption: {
+    backgroundColor: '#3d3d3d',
+  },
+  dropdownOptionText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  selectedDropdownOptionText: {
+    color: '#fff',
+    fontWeight: '600',
+  },
+  checkIcon: {
+    marginLeft: 8,
+  },
+  placeholderContainer: {
+    backgroundColor: '#1a1a1a',
+    padding: 40,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 40,
   },
-  selectedGradeButton: {
-    backgroundColor: '#4a90e2',
+  curriculumContainer: {
+    marginTop: 20,
+    backgroundColor: '#2d2d2d',
+    borderRadius: 12,
+    padding: 16,
   },
-  gradeText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#555',
-  },
-  selectedGradeText: {
-    color: 'white',
-  },
-  contentContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 15,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-    position: 'relative',
-  },
-  searchInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    padding: 10,
-    paddingLeft: 40,
-    fontSize: 16,
-  },
-  searchIcon: {
-    position: 'absolute',
-    left: 10,
-  },
-  subHeader: {
+  curriculumTitle: {
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 15,
+    marginBottom: 16,
+    textAlign: 'left',
   },
-  subjectItem: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+  curriculumSection: {
+    marginBottom: 12,
   },
-  subjectHeader: {
+  sectionHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    padding: 12,
+    backgroundColor: '#333',
+    borderRadius: 8,
   },
-  subjectText: {
+  sectionTitle: {
+    color: '#fff',
     fontSize: 16,
     fontWeight: '600',
-    color: '#444',
+    marginLeft: 8,
+    flex: 1,
+  },
+  sectionContent: {
+    paddingTop: 8,
+  },
+  subStrandContainer: {
+    marginBottom: 16,
+  },
+  subStrandTitle: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 8,
+    marginLeft: 12,
+  },
+  lessonItem: {
+    backgroundColor: '#404040',
+    padding: 12,
+    marginHorizontal: 12,
+    marginBottom: 4,
+    borderRadius: 6,
+  },
+  lessonText: {
+    color: '#fff',
+    fontSize: 14,
   },
   modalContainer: {
     flex: 1,
@@ -687,29 +836,8 @@ const styles = StyleSheet.create({
   closeButtonPlaceholder: {
     width: 34,
   },
-  topicsContainer: {
+  contentContainer: {
     flex: 1,
-    padding: 15,
-  },
-  topicNumber: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#4a90e2',
-    marginTop: 15,
-    marginBottom: 5,
-  },
-  topicItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-    marginLeft: 10,
-  },
-  topicText: {
-    fontSize: 15,
-    color: '#444',
   },
   learningContent: {
     padding: 20,
@@ -720,23 +848,29 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 15,
   },
-  // videoContainer: {
-  //   height: 200,
-  //   backgroundColor: '#000',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   marginBottom: 20,
-  //   position: 'relative',
-  //   borderRadius: 8,
-  //   overflow: 'hidden',
-  // },
-  videoThumbnail: {
+  videoContainer: {
+    height: Dimensions.get('window').width * 0.5625,
+    width: '100%',
+    backgroundColor: '#000',
+    marginBottom: 20,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  videoPlayer: {
     width: '100%',
     height: '100%',
-    opacity: 0.7,
   },
-  playIcon: {
+  progressBar: {
+    height: 4,
+    backgroundColor: '#333',
     position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: '#4a90e2',
   },
   learningOptions: {
     flexDirection: 'row',
@@ -745,7 +879,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   optionButton: {
-    alignItems: 'justify',
+    alignItems: 'center',
     paddingVertical: 10,
     width: '25%',
   },
@@ -753,7 +887,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: '#4a90e2',
     fontWeight: '500',
-    textAlign: 'justify',
+    textAlign: 'center',
   },
   contentDescription: {
     fontSize: 15,
@@ -764,7 +898,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     bottom: 20,
-    backgroundColor: '#4a90e2',
+    backgroundColor: '#FFD700',
     width: 60,
     height: 60,
     borderRadius: 30,
@@ -782,8 +916,6 @@ const styles = StyleSheet.create({
   quizContentContainer: {
     flex: 1,
     padding: 20,
-    fontSize: 16,
-    lineHeight: 24,
   },
   quizButtonContainer: {
     flexDirection: 'row',
@@ -800,17 +932,20 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
   },
-  videoContainer: {
-    height: Dimensions.get('window').width * 0.5625, // 16:9 aspect ratio
-    width: '100%',
-    backgroundColor: '#000',
-    marginBottom: 20,
-    borderRadius: 8,
-    overflow: 'hidden',
+  completionContainer: {
+    flex: 1,
   },
-  videoPlayer: {
-    width: '100%',
-    height: '100%',
+  restartButton: {
+    backgroundColor: '#4a90e2',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  restartButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 

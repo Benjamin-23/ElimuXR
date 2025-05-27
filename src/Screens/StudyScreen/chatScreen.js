@@ -28,6 +28,7 @@ const ChatScreen = () => {
     // Add user message to conversation
     try {
       const geminiResponse = await generateText(input);
+      console.log(geminiResponse, 'AI resonse');
       setConversation([
         ...conversation,
         {role: 'user', content: input},

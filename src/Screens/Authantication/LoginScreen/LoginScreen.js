@@ -24,13 +24,11 @@ import {Login, Style} from '../../../style';
 import {supabase} from '../../../lib/supabase';
 import {VectorIcons} from '../../../Components';
 import {StyleSheet} from 'react-native';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-
-GoogleSignin.configure({
-  webClientId:
-    '686197347745-osrovnods14krlvq3omqs1traaphr4ef.apps.googleusercontent.com', // From Google Cloud Console
-  offlineAccess: false,
-});
+// GoogleSignin.configure({
+//   webClientId:
+//     '686197347745-osrovnods14krlvq3omqs1traaphr4ef.apps.googleusercontent.com', // From Google Cloud Console
+//   scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+// });
 const Loginscreen = props => {
   const {navigation} = props;
   const [mobileNumber, setMobileNumber] = useState('');
@@ -113,55 +111,6 @@ const Loginscreen = props => {
   };
 
   // signin with googleusercontent
-  const signInWithGoogle = async () => {
-    try {
-      setLoading(true);
-
-      // 1. Check if device supports Google Sign-In
-      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-
-      // 2. Get user's ID token
-      const {idToken} = await GoogleSignin.signIn();
-      console.log(idToken, 'token');
-
-      // 3. Sign in with Supabase
-      const {data, error} = await supabase.auth.signInWithIdToken({
-        provider: 'google',
-        token: idToken,
-      });
-      console.log(error, 'kuna error');
-
-      if (error) throw error;
-
-      // 4. If successful, navigate to home
-      if (data.session) {
-        navigation.navigate(RouteName.HOME_SCREEN);
-      }
-    } catch (error) {
-      console.error('Google Sign-In Error:', error.message);
-
-      let errorMessage = 'Failed to sign in with Google';
-
-      // Handle specific errors
-      if (error.code === 'SIGN_IN_CANCELLED') {
-        errorMessage = 'Sign in cancelled';
-      } else if (error.code === 'INVALID_EMAIL') {
-        errorMessage = 'Invalid email address';
-      } else if (error.code === 'auth/user-not-found') {
-        errorMessage = 'No account found. Please register first.';
-      }
-
-      Alert.alert('Error', errorMessage, [
-        {
-          text: 'Register',
-          onPress: () => navigation.navigate(RouteName.REGISTER_SCREEN),
-        },
-        {text: 'OK'},
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <Container>
@@ -244,17 +193,6 @@ const Loginscreen = props => {
               </TouchableOpacity>
             </View>
             <Spacing space={SH(10)} />
-            <View style={styles.socialLoginContainer}>
-              <Text style={styles.socialLoginText}>Or login with</Text>
-              <Spacing space={SH(10)} />
-              <TouchableOpacity
-                style={styles.googleButton}
-                onPress={signInWithGoogle}
-                disabled={loading}>
-                <Image source={images.Google_Icon} style={styles.googleIcon} />
-                <Text style={styles.googleButtonText}>Sign in with Google</Text>
-              </TouchableOpacity>
-            </View>
           </View>
         </ScrollView>
       </View>

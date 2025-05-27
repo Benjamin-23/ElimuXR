@@ -31,13 +31,21 @@ const SubjectQuesAnsPair = ({
     get_selected({[index]: answerIndex});
     is_next();
 
+    // Update score if answer is correct
     if (answer.correct) {
-      getScore(prevScore => prevScore + 1);
+      // Award one point if the answer is correct
+      getScore(prevScore => {
+        const newScore = prevScore + 1;
+        return newScore; // Store the updated score value
+      });
     }
   };
 
   // If quiz is completed, show results
   if (quizCompleted) {
+    // Make sure questions data exists
+    const questions = userAnswers.questions || [];
+
     return (
       <ScrollView style={styles.resultsContainer}>
         <Text style={styles.resultsTitle}>Quiz Completed!</Text>
@@ -48,37 +56,39 @@ const SubjectQuesAnsPair = ({
           {Math.round((userAnswers.score / totalQuestions) * 100)}%
         </Text>
 
-        {answers.map((questionData, qIndex) => (
-          <View key={qIndex} style={styles.questionResult}>
-            <Text style={styles.questionText}>
-              Q{qIndex + 1}: {questionData.questionText}
-            </Text>
+        {questions.map((questionData, qIndex) => {
+          // Find the user's selected answer for this question
+          const userSelectedIndex = userAnswers[questionData.index];
+          const userSelectedAnswer =
+            userSelectedIndex !== undefined
+              ? questionData.answers[userSelectedIndex]
+              : null;
 
-            <Text style={styles.userAnswerText}>
-              Your answer:{' '}
-              {questionData.answers[userAnswers[qIndex]]?.text ||
-                'Not answered'}
-            </Text>
+          // Find the correct answer
+          const correctAnswer = questionData.answers.find(a => a.correct);
 
-            <Text style={styles.correctAnswerText}>
-              Correct answer: {questionData.answers.find(a => a.correct)?.text}
-            </Text>
+          return (
+            <View key={qIndex} style={styles.questionResult}>
+              <Text style={styles.questionText}>
+                Q{qIndex + 1}: {questionData.questionText}
+              </Text>
 
-            <Text style={styles.explanationText}>
-              Explanation:{' '}
-              {questionData.answers.find(a => a.correct)?.explanation ||
-                'No explanation available'}
-            </Text>
-          </View>
-        ))}
+              <Text style={styles.userAnswerText}>
+                Your answer: {userSelectedAnswer?.text || 'Not answered'}
+              </Text>
 
-        <TouchableOpacity
-          style={styles.restartButton}
-          onPress={() => {
-            // You'll need to implement restart logic in parent component
-          }}>
-          <Text style={styles.restartButtonText}>Restart Quiz</Text>
-        </TouchableOpacity>
+              <Text style={styles.correctAnswerText}>
+                Correct answer:{' '}
+                {correctAnswer?.text || 'No correct answer found'}
+              </Text>
+
+              <Text style={styles.explanationText}>
+                Explanation:{' '}
+                {correctAnswer?.explanation || 'No explanation available'}
+              </Text>
+            </View>
+          );
+        })}
       </ScrollView>
     );
   }
@@ -212,9 +222,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   restartButtonText: {
-    color: 'white',
+    color: '#000',
     fontSize: 16,
     fontWeight: 'bold',
+    backgroundColor: 'white',
+    borderColor: '#000',
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
   },
 });
 

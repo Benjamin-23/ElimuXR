@@ -11,6 +11,7 @@ export const writeScore = async score => {
       score,
       date: new Date().toISOString(),
     });
+    console.log(score, 'stored score');
 
     // Save back to storage
     await AsyncStorage.setItem('quizScores', JSON.stringify(scoresArray));
