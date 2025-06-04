@@ -508,7 +508,12 @@ const StudyScreen = () => {
               <Text style={styles.contentTitle}>Learning Materials</Text>
               <View style={styles.videoContainer}>
                 <Video
-                  source={images.Male_Video}
+                  source={
+                    selectedSubStrand ===
+                    'Parts of the Human Skin and their Functions'
+                      ? images.Human_Skin
+                      : images.Male_Video
+                  }
                   style={styles.videoPlayer}
                   controls={true}
                   paused={true}
