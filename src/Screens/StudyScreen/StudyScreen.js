@@ -556,7 +556,7 @@ const StudyScreen = () => {
               <Text style={styles.contentTitle}>Learning Materials</Text>
               <View style={styles.videoContainer}>
                 <Video
-                  source={images.Male_Video}
+                  source={images.Human_Skin}
                   style={styles.videoPlayer}
                   controls={true}
                   paused={true}
