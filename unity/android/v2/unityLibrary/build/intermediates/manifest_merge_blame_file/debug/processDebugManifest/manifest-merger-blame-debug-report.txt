@@ -1,0 +1,138 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    xmlns:tools="http://schemas.android.com/tools"
+4    package="com.unity3d.player" >
+5
+6    <uses-sdk android:minSdkVersion="25" />
+7
+8    <uses-permission android:name="android.permission.INTERNET" />
+8-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:3:3-65
+8-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:3:20-62
+9
+10    <uses-feature android:glEsVersion="0x00030000" />
+10-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:4:3-52
+10-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:4:17-49
+11    <uses-feature
+11-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:5:3-88
+12        android:name="android.hardware.touchscreen"
+12-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:5:17-60
+13        android:required="false" />
+13-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:5:61-85
+14    <uses-feature
+14-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:6:3-99
+15        android:name="android.hardware.touchscreen.multitouch"
+15-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:6:17-71
+16        android:required="false" />
+16-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:6:72-96
+17    <uses-feature
+17-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:7:3-108
+18        android:name="android.hardware.touchscreen.multitouch.distinct"
+18-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:7:17-80
+19        android:required="false" />
+19-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:7:81-105
+20
+21    <uses-permission android:name="android.permission.CAMERA" />
+21-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:25:3-63
+21-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:25:20-60
+22
+23    <uses-feature
+23-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:26:3-85
+24        android:name="android.hardware.camera.ar"
+24-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:26:17-58
+25        android:required="true" />
+25-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:26:59-82
+26    <uses-feature
+26-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:27:3-83
+27        android:name="com.google.ar.core.depth"
+27-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:27:17-56
+28        android:required="true" />
+28-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:27:57-80
+29
+30    <application android:extractNativeLibs="true" >
+30-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:8:3-24:17
+30-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:8:16-48
+31        <meta-data
+31-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:9:5-69
+32            android:name="unity.splash-mode"
+32-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:9:16-48
+33            android:value="0" />
+33-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:9:49-66
+34        <meta-data
+34-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:10:5-74
+35            android:name="unity.splash-enable"
+35-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:10:16-50
+36            android:value="True" />
+36-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:10:51-71
+37        <meta-data
+37-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:11:5-78
+38            android:name="unity.launch-fullscreen"
+38-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:11:16-54
+39            android:value="True" />
+39-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:11:55-75
+40        <meta-data
+40-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:12:5-81
+41            android:name="notch.config"
+41-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:12:16-43
+42            android:value="portrait|landscape" />
+42-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:12:44-78
+43        <meta-data
+43-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:13:5-84
+44            android:name="unity.auto-report-fully-drawn"
+44-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:13:16-60
+45            android:value="true" />
+45-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:13:61-81
+46
+47        <activity
+47-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:14:5-21:16
+48            android:name="com.unity3d.player.UnityPlayerActivity"
+48-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:14:15-68
+49            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
+49-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:14:180-361
+50            android:exported="true"
+50-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:14:433-456
+51            android:hardwareAccelerated="false"
+51-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:14:397-432
+52            android:launchMode="singleTask"
+52-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:14:148-179
+53            android:resizeableActivity="false"
+53-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:14:362-396
+54            android:screenOrientation="fullUser"
+54-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:14:111-147
+55            android:theme="@style/UnityThemeSelector" >
+55-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:14:69-110
+56
+57            <!--
+58      <intent-filter>
+59        <category android:name="android.intent.category.LAUNCHER" />
+60        <action android:name="android.intent.action.MAIN" />
+61      </intent-filter>
+62            -->
+63            <meta-data
+63-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:19:7-82
+64                android:name="unityplayer.UnityActivity"
+64-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:19:18-58
+65                android:value="true" />
+65-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:19:59-79
+66            <meta-data
+66-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:20:7-70
+67                android:name="notch_support"
+67-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:20:18-46
+68                android:value="true" />
+68-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:20:47-67
+69        </activity>
+70
+71        <meta-data
+71-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:22:5-88
+72            android:name="unityplayer.SkipPermissionsDialog"
+72-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:22:16-64
+73            android:value="true" />
+73-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:22:65-85
+74        <meta-data
+74-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:23:5-77
+75            android:name="com.google.ar.core"
+75-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:23:16-49
+76            android:value="required" />
+76-->D:\Cu\test\dev\ElimuXR\unity\android\v2\unityLibrary\src\main\AndroidManifest.xml:23:50-74
+77    </application>
+78
+79</manifest>
