@@ -158,6 +158,11 @@ const StudyScreen = () => {
       modelId: 5,
       arView: true,
     },
+    'Digestive System':
+    {
+      modelId: 6,
+      arView: true,
+    }
   };
 
   // Get available options based on current selections

@@ -45,20 +45,20 @@ static Il2CppMethodPointer s_methodPointers[14] =
 };
 static const int32_t s_InvokerIndices[14] = 
 {
-	19263,
-	11410,
-	11410,
-	9004,
-	11410,
-	8860,
-	11410,
-	11410,
-	11410,
-	8961,
-	8961,
-	8961,
-	11410,
-	11410,
+	19264,
+	11411,
+	11411,
+	9005,
+	11411,
+	8861,
+	11411,
+	11411,
+	11411,
+	8962,
+	8962,
+	8962,
+	11411,
+	11411,
 };
 IL2CPP_EXTERN_C const Il2CppCodeGenModule g_WebXRInputProfile_Viewer_CodeGenModule;
 const Il2CppCodeGenModule g_WebXRInputProfile_Viewer_CodeGenModule = 
