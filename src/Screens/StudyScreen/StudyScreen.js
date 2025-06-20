@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,17 +11,17 @@ import {
   Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {queryDeepSeek} from './deepseekService';
+import { queryDeepSeek } from './deepseekService';
 import ChatScreen from './chatScreen';
 import images from '../../images/index';
 import QuesAnsPair from '../../Components/QuizComponets/QuesAnsPair';
-import {writeScore} from '../../Components/QuizComponets/scoreStorage';
+import { writeScore } from '../../Components/QuizComponets/scoreStorage';
 import maleReproductiveQuiz from '../../../maleReproductiveQuiz.json';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Video from 'react-native-video';
 import SubjectQuesAnsPair from './QuesAnsPair';
 
-import {UnityScreen} from '../Unity';
+import { UnityScreen } from '../Unity';
 
 const StudyScreen = () => {
   // State management
@@ -274,7 +274,7 @@ const StudyScreen = () => {
   };
 
   const getSelected = selectedOption => {
-    setSelected(prev => ({...prev, ...selectedOption}));
+    setSelected(prev => ({ ...prev, ...selectedOption }));
   };
 
   const restartQuiz = () => {
@@ -322,7 +322,7 @@ const StudyScreen = () => {
                   style={[
                     styles.dropdownOptionText,
                     selectedGrade === grade &&
-                      styles.selectedDropdownOptionText,
+                    styles.selectedDropdownOptionText,
                   ]}>
                   Grade {grade}
                 </Text>
@@ -368,7 +368,7 @@ const StudyScreen = () => {
                   style={[
                     styles.dropdownOptionText,
                     selectedSubject === subject &&
-                      styles.selectedDropdownOptionText,
+                    styles.selectedDropdownOptionText,
                   ]}>
                   {subject}
                 </Text>
@@ -408,7 +408,7 @@ const StudyScreen = () => {
                   style={[
                     styles.dropdownOptionText,
                     selectedStrand === strand &&
-                      styles.selectedDropdownOptionText,
+                    styles.selectedDropdownOptionText,
                   ]}>
                   {strand}
                 </Text>
@@ -447,7 +447,6 @@ const StudyScreen = () => {
                   ]}
                   onPress={() => {
                     handleSubStrandSelect(subStrand);
-                    handleSubStrandSelectForUnity(subStrand);
                   }}>
                   {isSelected && (
                     <Icon
@@ -567,14 +566,14 @@ const StudyScreen = () => {
                   paused={true}
                   resizeMode="contain"
                   onError={error => console.log('Video error:', error)}
-                  onProgress={({currentTime}) => setCurrentTime(currentTime)}
-                  onLoad={({duration}) => setDuration(duration)}
+                  onProgress={({ currentTime }) => setCurrentTime(currentTime)}
+                  onLoad={({ duration }) => setDuration(duration)}
                 />
                 <View style={styles.progressBar}>
                   <View
                     style={[
                       styles.progressFill,
-                      {width: `${(currentTime / duration) * 100}%`},
+                      { width: `${(currentTime / duration) * 100}%` },
                     ]}
                   />
                 </View>
@@ -621,7 +620,7 @@ const StudyScreen = () => {
             style={styles.chatButton}
             onPress={() => setShowChatScreen(true)}>
             <Image
-              style={{width: 40, height: 40}}
+              style={{ width: 40, height: 40 }}
               resizeMode="contain"
               source={images.Chat_icon}
             />
@@ -632,14 +631,14 @@ const StudyScreen = () => {
       {/* Quiz Modal */}
       <Modal visible={showQuiz} animationType="slide" transparent={false}>
         <SafeAreaView
-          style={[styles.modalContainer, {backgroundColor: Colors.background}]}>
+          style={[styles.modalContainer, { backgroundColor: Colors.background }]}>
           <View style={styles.modalHeader}>
             <TouchableOpacity
               style={styles.backButton}
               onPress={() => setShowQuiz(false)}>
               <Icon name="close" size={24} color={Colors.text} />
             </TouchableOpacity>
-            <Text style={[styles.modalTitle, {color: '#000'}]}>
+            <Text style={[styles.modalTitle, { color: '#000' }]}>
               Male Reproductive System Quiz
             </Text>
             <View style={styles.closeButtonPlaceholder} />
@@ -693,9 +692,9 @@ const StudyScreen = () => {
 
             <View style={styles.quizButtonContainer}>
               {(showNext && quizIndex > 0) ||
-              (selected[quizIndex] !== undefined && quizIndex > 0) ? (
+                (selected[quizIndex] !== undefined && quizIndex > 0) ? (
                 <TouchableOpacity
-                  style={[styles.quizNavButton, {backgroundColor: '#000'}]}
+                  style={[styles.quizNavButton, { backgroundColor: '#000' }]}
                   onPress={() => setQuizIndex(quizIndex - 1)}>
                   <Text style={styles.quizNavButtonText}>Previous</Text>
                 </TouchableOpacity>
@@ -762,7 +761,7 @@ const StudyScreen = () => {
         style={styles.chatButton}
         onPress={() => setShowChatScreen(true)}>
         <Image
-          style={{width: 40, height: 40}}
+          style={{ width: 40, height: 40 }}
           resizeMode="contain"
           source={images.Chat_icon}
         />
