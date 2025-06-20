@@ -35,6 +35,11 @@ local.properties
 !debug.keystore
 .env.example
 
+# Unity
+#
+unity/android/
+unity/ios/
+
 # node.js
 #
 node_modules/
